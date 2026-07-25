@@ -1,14 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { INITIAL_CATEGORIES, INITIAL_PRODUCTS } from '@/lib/data';
 import ProductCard from '@/components/ProductCard';
 import { Search, Filter } from 'lucide-react';
 
-export default function SearchPage() {
-  const [searchQuery, setSearchQuery] = useState('');
+function SearchPageContent() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get('q') || '';
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedBrand, setSelectedBrand] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
 
   const brands = Array.from(new Set(INITIAL_PRODUCTS.map((p) => p.brand)));
 
@@ -16,6 +26,7 @@ export default function SearchPage() {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.grade.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesBrand = selectedBrand === 'all' || product.brand === selectedBrand;
     const matchesCategory = selectedCategory === 'all' || product.category_slug === selectedCategory;
@@ -113,5 +124,13 @@ export default function SearchPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="py-12 text-center text-xs text-slate-500">Loading catalog search...</div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }
