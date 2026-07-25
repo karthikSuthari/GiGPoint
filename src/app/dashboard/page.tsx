@@ -45,6 +45,7 @@ export default function VendorDealerDashboardPage() {
   // Active Tab: 'orders' | 'pos' | 'qr' | 'analytics'
   const [activeTab, setActiveTab] = useState<'orders' | 'pos' | 'qr' | 'analytics'>('orders');
   const [timePeriod, setTimePeriod] = useState<string>('july_2026');
+  const [salesChannel, setSalesChannel] = useState<'all' | 'online' | 'offline'>('all');
 
   // Offline POS Form State
   const [selectedProductId, setSelectedProductId] = useState<string>(INITIAL_PRODUCTS[0]?.id || '');
@@ -474,20 +475,35 @@ export default function VendorDealerDashboardPage() {
                 </p>
               </div>
 
-              {/* Time Period Filter Selector */}
-              <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold shrink-0">
-                <span className="text-slate-500 px-2">Period:</span>
-                <select
-                  value={timePeriod}
-                  onChange={(e) => setTimePeriod(e.target.value)}
-                  className="bg-white p-2 rounded-xl border border-slate-200 text-slate-900 font-extrabold focus:outline-none focus:ring-2 focus:ring-[#0A4D8C]"
-                >
-                  <option value="all">All Time</option>
-                  <option value="july_2026">This Month (July 2026)</option>
-                  <option value="june_2026">Last Month (June 2026)</option>
-                  <option value="ytd_2026">Year-to-Date (2026)</option>
-                  <option value="fy_2025">2025 Financial Year</option>
-                </select>
+              {/* Time Period & Sales Channel Filter Selectors */}
+              <div className="flex flex-wrap items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold shrink-0">
+                <div className="flex items-center gap-1">
+                  <span className="text-slate-500 px-1">Channel:</span>
+                  <select
+                    value={salesChannel}
+                    onChange={(e) => setSalesChannel(e.target.value as 'all' | 'online' | 'offline')}
+                    className="bg-white p-2 rounded-xl border border-slate-200 text-[#0A4D8C] font-extrabold focus:outline-none focus:ring-2 focus:ring-[#0A4D8C]"
+                  >
+                    <option value="all">All Channels (Online + Offline)</option>
+                    <option value="online">Online Auto-Routed Orders</option>
+                    <option value="offline">Offline Counter POS Sales</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-1 border-l border-slate-200 pl-2">
+                  <span className="text-slate-500 px-1">Period:</span>
+                  <select
+                    value={timePeriod}
+                    onChange={(e) => setTimePeriod(e.target.value)}
+                    className="bg-white p-2 rounded-xl border border-slate-200 text-slate-900 font-extrabold focus:outline-none focus:ring-2 focus:ring-[#0A4D8C]"
+                  >
+                    <option value="all">All Time</option>
+                    <option value="july_2026">This Month (July 2026)</option>
+                    <option value="june_2026">Last Month (June 2026)</option>
+                    <option value="ytd_2026">Year-to-Date (2026)</option>
+                    <option value="fy_2025">2025 Financial Year</option>
+                  </select>
+                </div>
               </div>
             </div>
 
