@@ -12,7 +12,8 @@ import {
   Package, 
   MessageSquare,
   Droplet,
-  MapPin
+  MapPin,
+  Headphones
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -30,7 +31,7 @@ export default function Navbar() {
     { href: '/dealers', label: 'Depots', icon: MapPin },
     { href: '/request-quote', label: 'RFQ Quote', icon: FileText, badge: totalQuoteCount },
     { href: '/advisor', label: 'AI Advisor', icon: Sparkles, highlight: true },
-    { href: '/orders', label: 'Orders', icon: Package }
+    { href: '/support', label: 'Support', icon: Headphones }
   ];
 
   return (
@@ -56,10 +57,18 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/dealers"
-              className="hidden md:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+              className="hidden lg:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
             >
               <MapPin className="w-3.5 h-3.5 text-[#F5A623]" />
-              <span>Depot Locator</span>
+              <span>Depots</span>
+            </Link>
+
+            <Link
+              href="/support"
+              className="hidden md:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+            >
+              <Headphones className="w-3.5 h-3.5 text-[#F5A623]" />
+              <span>Help Center</span>
             </Link>
 
             <Link
