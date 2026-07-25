@@ -30,6 +30,7 @@ export default function ProductDetailPage() {
   const [addedCart, setAddedCart] = useState(false);
   const [addedQuote, setAddedQuote] = useState(false);
   const [showSpecs, setShowSpecs] = useState(true);
+  const [imgError, setImgError] = useState(false);
 
   const handleBuyNow = () => {
     addToCart(product, quantity);
@@ -63,12 +64,22 @@ export default function ProductDetailPage() {
         <div className="space-y-3">
           <div className="h-72 md:h-96 rounded-2xl overflow-hidden bg-slate-100 relative">
             {/* eslint-disable-next-html-element-suppression */}
-            <img
-              src={product.image_url}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+            {!imgError ? (
+              <img
+                src={product.image_url}
+                alt={product.name}
+                onError={() => setImgError(true)}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-[#0A4D8C] via-[#083C6E] to-slate-900 flex flex-col items-center justify-center text-white p-6 text-center">
+                <Droplet className="w-16 h-16 text-[#F5A623] mb-2 animate-pulse" />
+                <h3 className="text-base font-extrabold">{product.name}</h3>
+                <span className="text-xs text-blue-200 mt-1">{product.brand} • Grade: {product.grade}</span>
+              </div>
+            )}
+
+            <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
               <span className="bg-[#0A4D8C] text-white text-xs font-bold px-2.5 py-1 rounded-md shadow">
                 {product.brand}
               </span>

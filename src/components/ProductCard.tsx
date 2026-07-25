@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { useCartStore } from '@/store/useCartStore';
-import { ShoppingCart, FileText, Check, ChevronRight } from 'lucide-react';
+import { ShoppingCart, FileText, Check, ChevronRight, Droplet } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -13,8 +13,11 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const addToCart = useCartStore((state) => state.addToCart);
   const addToQuote = useCartStore((state) => state.addToQuote);
-  const [addedCart, setAddedCart] = React.useState(false);
-  const [addedQuote, setAddedQuote] = React.useState(false);
+  const [addedCart, setAddedCart] = useState(false);
+  const [addedQuote, setAddedQuote] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
+  const fallbackImage = 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80';
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,22 +40,31 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Product Image & Badges */}
       <Link href={`/product/${product.id}`} className="relative block h-44 overflow-hidden bg-slate-100">
         {/* eslint-disable-next-html-element-suppression */}
-        <img
-          src={product.image_url}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        <div className="absolute top-2 left-2 flex flex-col gap-1">
-          <span className="bg-[#0A4D8C] text-white text-[11px] font-bold px-2 py-0.5 rounded-md shadow-sm">
+        {!imgError ? (
+          <img
+            src={product.image_url}
+            alt={product.name}
+            onError={() => setImgError(true)}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-[#0A4D8C] to-slate-900 flex flex-col items-center justify-center text-white p-4 text-center">
+            <Droplet className="w-10 h-10 text-[#F5A623] mb-1 animate-pulse" />
+            <span className="text-xs font-bold text-slate-200 line-clamp-1">{product.brand}</span>
+          </div>
+        )}
+
+        <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+          <span className="bg-[#0A4D8C] text-white text-[11px] font-bold px-2 py-0.5 rounded-md shadow-sm w-fit">
             {product.brand}
           </span>
-          <span className="bg-[#F5A623] text-gray-900 text-[10px] font-extrabold px-2 py-0.5 rounded-md shadow-sm uppercase tracking-wider">
+          <span className="bg-[#F5A623] text-gray-900 text-[10px] font-extrabold px-2 py-0.5 rounded-md shadow-sm uppercase tracking-wider w-fit">
             Grade: {product.grade}
           </span>
         </div>
 
         {product.is_bulk_available && (
-          <span className="absolute bottom-2 right-2 bg-emerald-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow">
+          <span className="absolute bottom-2 right-2 bg-emerald-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow z-10">
             Bulk RFQ Available
           </span>
         )}

@@ -21,7 +21,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     price_inr: 52.50,
     unit: 'Liter (Bulk Tanker)',
     stock_qty: 50000,
-    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2023/12/FO-LDO-watermarked.png',
+    image_url: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80',
     spec_sheet: {
       'Gross Calorific Value': '10,200 kcal/kg',
       'Kinematic Viscosity @ 50°C': '180 cSt',
@@ -43,7 +43,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     price_inr: 68.00,
     unit: 'Liter (Bulk Tanker)',
     stock_qty: 35000,
-    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/LDO.png',
+    image_url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
     spec_sheet: {
       'Gross Calorific Value': '10,300 kcal/kg',
       'Kinematic Viscosity @ 40°C': '2.5 - 15.7 cSt',
@@ -64,7 +64,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     price_inr: 54.20,
     unit: 'Liter (Bulk Tanker)',
     stock_qty: 40000,
-    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/LVFO-Watermarked.png',
+    image_url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80',
     spec_sheet: {
       'Gross Calorific Value': '10,150 kcal/kg',
       'Kinematic Viscosity @ 50°C': '80 cSt',
@@ -84,7 +84,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     price_inr: 44.50,
     unit: 'Kg (Bulk Tanker)',
     stock_qty: 80000,
-    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2023/12/Bitumen-Bulk.png',
+    image_url: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80',
     spec_sheet: {
       'Absolute Viscosity @ 60°C': '2400 - 3600 Poise',
       'Kinematic Viscosity @ 135°C': '350 cSt Min',
@@ -105,7 +105,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     price_inr: 47.80,
     unit: 'Liter (Bulk Tanker)',
     stock_qty: 25000,
-    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/Tyre-Pyrolysis-Oil-watermarked.png',
+    image_url: 'https://images.unsplash.com/photo-1615906655593-ad0386982a0f?auto=format&fit=crop&w=600&q=80',
     spec_sheet: {
       'Gross Calorific Value': '10,400 kcal/kg',
       'Flash Point': '45°C - 55°C',
@@ -125,7 +125,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     price_inr: 49.00,
     unit: 'Liter (Bulk Tanker)',
     stock_qty: 20000,
-    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/Plastic-Pyrolysis-Oil-watermarked.png',
+    image_url: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80',
     spec_sheet: {
       'Gross Calorific Value': '10,500 kcal/kg',
       'Flash Point': '42°C',
