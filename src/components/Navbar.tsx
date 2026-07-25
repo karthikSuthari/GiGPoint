@@ -11,7 +11,8 @@ import {
   Sparkles, 
   Package, 
   MessageSquare,
-  Droplet
+  Droplet,
+  MapPin
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -26,6 +27,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/search', label: 'Search', icon: Search },
+    { href: '/dealers', label: 'Depots', icon: MapPin },
     { href: '/request-quote', label: 'RFQ Quote', icon: FileText, badge: totalQuoteCount },
     { href: '/advisor', label: 'AI Advisor', icon: Sparkles, highlight: true },
     { href: '/orders', label: 'Orders', icon: Package }
@@ -52,6 +54,14 @@ export default function Navbar() {
 
           {/* Header Action Buttons */}
           <div className="flex items-center gap-3">
+            <Link
+              href="/dealers"
+              className="hidden md:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+            >
+              <MapPin className="w-3.5 h-3.5 text-[#F5A623]" />
+              <span>Depot Locator</span>
+            </Link>
+
             <Link
               href="/request-quote"
               className="hidden sm:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
@@ -80,7 +90,7 @@ export default function Navbar() {
 
             {/* WhatsApp Quick Link */}
             <a
-              href="https://wa.me/919876543210?text=Hi%20Lubeswala%20Team,%20I%20have%20an%20inquiry%20regarding%20lubricants"
+              href="https://wa.me/919396628880?text=Hi%20PetroBazaar%20Lubeswala%20Team,%20I%20have%20an%20inquiry"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-emerald-400 hover:bg-white/10 rounded-full transition-colors"
