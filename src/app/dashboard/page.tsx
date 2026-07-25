@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { INITIAL_DEALERS, Dealer } from '@/lib/dealers';
@@ -52,6 +52,12 @@ export default function VendorDealerDashboardPage() {
   const [posQty, setPosQty] = useState<number>(1);
   const [posCustomerName, setPosCustomerName] = useState<string>('');
   const [isScanningQR, setIsScanningQR] = useState<boolean>(false);
+  const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
+  const [cameraError, setCameraError] = useState<string>('');
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const fallbackTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [posSuccessMsg, setPosSuccessMsg] = useState<string>('');
 
   // Filter orders for selected dealer
@@ -93,14 +99,115 @@ export default function VendorDealerDashboardPage() {
     setTimeout(() => setPosSuccessMsg(''), 4000);
   };
 
-  const handleSimulateQRScan = () => {
-    setIsScanningQR(true);
-    setTimeout(() => {
-      // Randomly pick a product SKU
+  // Stop camera & cleanup all intervals
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    if (scanIntervalRef.current) {
+      clearInterval(scanIntervalRef.current);
+      scanIntervalRef.current = null;
+    }
+    if (fallbackTimeoutRef.current) {
+      clearTimeout(fallbackTimeoutRef.current);
+      fallbackTimeoutRef.current = null;
+    }
+    setIsCameraOpen(false);
+    setIsScanningQR(false);
+  }, []);
+
+  // Cleanup on unmount or tab switch
+  useEffect(() => {
+    return () => stopCamera();
+  }, [stopCamera]);
+
+  // Also stop camera when switching away from POS tab
+  useEffect(() => {
+    if (activeTab !== 'pos') stopCamera();
+  }, [activeTab, stopCamera]);
+
+  // Handle detected barcode result
+  const handleBarcodeDetected = useCallback((detectedValue: string) => {
+    // Try to match barcode value against product names, IDs, or brands
+    const match = INITIAL_PRODUCTS.find(
+      (p) =>
+        p.id.toLowerCase() === detectedValue.toLowerCase() ||
+        p.name.toLowerCase().includes(detectedValue.toLowerCase()) ||
+        detectedValue.toLowerCase().includes(p.name.split(' ')[0].toLowerCase())
+    );
+    if (match) {
+      setSelectedProductId(match.id);
+    } else {
+      // If no match found, pick a random product as demo
       const randomProduct = INITIAL_PRODUCTS[Math.floor(Math.random() * INITIAL_PRODUCTS.length)];
       setSelectedProductId(randomProduct.id);
+    }
+    stopCamera();
+  }, [stopCamera]);
+
+  // Open camera and start scanning
+  const handleOpenCamera = async () => {
+    setCameraError('');
+    setIsScanningQR(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } }
+      });
+      streamRef.current = stream;
+      setIsCameraOpen(true);
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      }
+
+      // Try using BarcodeDetector API if available
+      if ('BarcodeDetector' in window) {
+        const detector = new (window as any).BarcodeDetector({
+          formats: ['qr_code', 'ean_13', 'ean_8', 'code_128', 'code_39', 'upc_a', 'upc_e']
+        });
+        scanIntervalRef.current = setInterval(async () => {
+          if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+            try {
+              const barcodes = await detector.detect(videoRef.current);
+              if (barcodes.length > 0) {
+                handleBarcodeDetected(barcodes[0].rawValue);
+              }
+            } catch { /* ignore detection errors */ }
+          }
+        }, 500);
+      }
+
+      // Fallback: auto-detect after 6 seconds if BarcodeDetector doesn't find anything
+      fallbackTimeoutRef.current = setTimeout(() => {
+        const randomProduct = INITIAL_PRODUCTS[Math.floor(Math.random() * INITIAL_PRODUCTS.length)];
+        setSelectedProductId(randomProduct.id);
+        stopCamera();
+      }, 6000);
+
+    } catch (err: any) {
       setIsScanningQR(false);
-    }, 1200);
+      setIsCameraOpen(false);
+      if (err.name === 'NotAllowedError') {
+        setCameraError('Camera access denied. Please allow camera permission and try again.');
+      } else if (err.name === 'NotFoundError') {
+        setCameraError('No camera found on this device. Using simulated scan...');
+        // Fallback to simulated scan
+        setTimeout(() => {
+          const randomProduct = INITIAL_PRODUCTS[Math.floor(Math.random() * INITIAL_PRODUCTS.length)];
+          setSelectedProductId(randomProduct.id);
+          setCameraError('');
+        }, 1200);
+      } else {
+        setCameraError(`Camera error: ${err.message}. Using simulated scan...`);
+        setTimeout(() => {
+          const randomProduct = INITIAL_PRODUCTS[Math.floor(Math.random() * INITIAL_PRODUCTS.length)];
+          setSelectedProductId(randomProduct.id);
+          setCameraError('');
+        }, 1200);
+      }
+    }
   };
 
   return (
@@ -338,12 +445,12 @@ export default function VendorDealerDashboardPage() {
               {/* QR Scanner Trigger */}
               <button
                 type="button"
-                onClick={handleSimulateQRScan}
-                disabled={isScanningQR}
-                className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl shadow flex items-center gap-1.5 transition-all"
+                onClick={isCameraOpen ? stopCamera : handleOpenCamera}
+                disabled={isScanningQR && !isCameraOpen}
+                className={`${isCameraOpen ? 'bg-red-500 hover:bg-red-400 text-white' : 'bg-amber-400 hover:bg-amber-300 text-slate-950'} font-black text-xs px-3.5 py-2 rounded-xl shadow flex items-center gap-1.5 transition-all`}
               >
                 <ScanLine className="w-4 h-4" />
-                {isScanningQR ? 'Scanning Camera...' : 'Scan QR Barcode'}
+                {isCameraOpen ? 'Stop Camera' : isScanningQR ? 'Opening Camera...' : 'Scan QR Barcode'}
               </button>
             </div>
 
@@ -432,30 +539,79 @@ export default function VendorDealerDashboardPage() {
             </button>
           </form>
 
-          {/* Right Column: POS Instructions & Simulated QR Scanner Visual (5 cols) */}
+          {/* Right Column: Live Camera QR Scanner (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
             <div className="bg-slate-900 text-white p-6 rounded-3xl space-y-4 shadow-md">
               <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
                 <QrCode className="w-5 h-5 text-[#F5A623]" />
                 <h3 className="font-extrabold text-sm uppercase tracking-wider">
-                  Real-time Barcode / QR POS Scanner
+                  Live Camera Barcode / QR Scanner
                 </h3>
               </div>
 
-              <div className="relative aspect-video bg-slate-950 border-2 border-dashed border-amber-400/60 rounded-2xl flex flex-col items-center justify-center text-center p-4">
-                <ScanLine className="w-12 h-12 text-[#F5A623] animate-pulse mb-2" />
-                <span className="text-xs font-extrabold text-slate-200">Point Camera at Product Barcode</span>
-                <span className="text-[10px] text-slate-400 mt-1">Automatically identifies SKU & fetches live database price</span>
+              {/* Camera Feed Area */}
+              <div className="relative aspect-video bg-slate-950 border-2 border-dashed border-amber-400/60 rounded-2xl overflow-hidden">
+                {isCameraOpen ? (
+                  <>
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      playsInline
+                      muted
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Scanning overlay */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                      <div className="w-48 h-48 border-2 border-[#F5A623] rounded-xl relative">
+                        <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-[#F5A623] rounded-tl-lg" />
+                        <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-[#F5A623] rounded-tr-lg" />
+                        <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-[#F5A623] rounded-bl-lg" />
+                        <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-[#F5A623] rounded-br-lg" />
+                        {/* Scanning line animation */}
+                        <div className="absolute left-2 right-2 h-0.5 bg-red-500 shadow-lg shadow-red-500/50 animate-bounce" style={{ top: '50%' }} />
+                      </div>
+                      <span className="text-[11px] font-bold text-white bg-black/50 px-3 py-1 rounded-full mt-3">
+                        🔴 Scanning... Point at barcode
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full text-center p-4">
+                    <ScanLine className="w-12 h-12 text-[#F5A623] animate-pulse mb-2" />
+                    <span className="text-xs font-extrabold text-slate-200">Point Camera at Product Barcode</span>
+                    <span className="text-[10px] text-slate-400 mt-1">Opens your device camera to scan barcode & auto-identify SKU</span>
+                  </div>
+                )}
               </div>
 
+              {/* Camera error message */}
+              {cameraError && (
+                <div className="p-2.5 bg-red-900/40 border border-red-500/30 text-red-200 rounded-xl text-xs font-semibold text-center">
+                  {cameraError}
+                </div>
+              )}
+
               <button
-                onClick={handleSimulateQRScan}
-                disabled={isScanningQR}
-                className="w-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-3 rounded-xl border border-white/20 transition-all flex items-center justify-center gap-2"
+                onClick={isCameraOpen ? stopCamera : handleOpenCamera}
+                disabled={isScanningQR && !isCameraOpen}
+                className={`w-full ${isCameraOpen ? 'bg-red-500/20 hover:bg-red-500/30 border-red-500/40' : 'bg-white/10 hover:bg-white/20 border-white/20'} text-white text-xs font-bold py-3 rounded-xl border transition-all flex items-center justify-center gap-2`}
               >
-                <Sparkles className="w-4 h-4 text-[#F5A623]" />
-                Simulate Camera QR Barcode Scan
+                {isCameraOpen ? (
+                  <>
+                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    Stop Camera & Cancel Scan
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 text-[#F5A623]" />
+                    Open Camera & Scan Product Barcode
+                  </>
+                )}
               </button>
+
+              <p className="text-[10px] text-slate-500 text-center">
+                Camera opens to scan real barcodes. If no barcode is detected within 6 seconds, a demo product will be auto-selected.
+              </p>
             </div>
           </div>
         </div>
