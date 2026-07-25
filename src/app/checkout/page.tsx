@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCartStore } from '@/store/useCartStore';
 import { Order } from '@/types';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { CheckCircle2, ShieldCheck, Truck, ArrowLeft } from 'lucide-react';
 
 export default function CheckoutPage() {
@@ -29,7 +30,7 @@ export default function CheckoutPage() {
   );
   const grandTotal = subtotal * 1.18; // Subtotal + 18% GST
 
-  const handleSubmitOrder = (e: React.FormEvent) => {
+  const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!customerName || !customerPhone || !street || !city || !pincode) {
       alert('Please fill in all required delivery address fields.');
@@ -55,12 +56,27 @@ export default function CheckoutPage() {
       created_at: new Date().toISOString(),
     };
 
-    setTimeout(() => {
-      addOrder(newOrder);
-      clearCart();
-      setOrderPlaced(newOrder);
-      setIsSubmitting(false);
-    }, 800);
+    // Insert into Supabase Postgres DB if configured
+    if (isSupabaseConfigured()) {
+      try {
+        await supabase.from('orders').insert({
+          id: newOrder.id,
+          customer_name: newOrder.customer_name,
+          customer_phone: newOrder.customer_phone,
+          delivery_address: newOrder.delivery_address,
+          total_inr: newOrder.total_inr,
+          payment_method: newOrder.payment_method,
+          status: newOrder.status
+        });
+      } catch (err) {
+        console.error('Supabase DB order insert error (falling back to client state):', err);
+      }
+    }
+
+    addOrder(newOrder);
+    clearCart();
+    setOrderPlaced(newOrder);
+    setIsSubmitting(false);
   };
 
   if (orderPlaced) {
@@ -254,7 +270,7 @@ export default function CheckoutPage() {
             disabled={isSubmitting}
             className="w-full mt-4 bg-[#0A4D8C] hover:bg-[#083C6E] text-white text-sm font-bold py-3.5 rounded-xl shadow transition-all active:scale-95 disabled:opacity-50"
           >
-            {isSubmitting ? 'Confirming Order...' : `Place Retail Order (₹ ${grandTotal.toLocaleString('en-IN')})`}
+            {isSubmitting ? 'Submitting to Database...' : `Place Retail Order (₹ ${grandTotal.toLocaleString('en-IN')})`}
           </button>
         </form>
 

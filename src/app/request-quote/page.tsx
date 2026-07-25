@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useCartStore } from '@/store/useCartStore';
 import { INITIAL_PRODUCTS } from '@/lib/data';
 import { QuoteRequest } from '@/types';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { FileText, CheckCircle2, Plus, Trash2, ArrowLeft, ShieldCheck } from 'lucide-react';
 
 export default function RequestQuotePage() {
@@ -24,6 +25,7 @@ export default function RequestQuotePage() {
   const [deliveryPincode, setDeliveryPincode] = useState('');
   const [notes, setNotes] = useState('');
   const [selectedProductId, setSelectedProductId] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedQuote, setSubmittedQuote] = useState<QuoteRequest | null>(null);
 
   const handleAddProductToQuote = () => {
@@ -35,7 +37,7 @@ export default function RequestQuotePage() {
     }
   };
 
-  const handleSubmitRFQ = (e: React.FormEvent) => {
+  const handleSubmitRFQ = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (quoteItems.length === 0) {
@@ -47,6 +49,8 @@ export default function RequestQuotePage() {
       alert('Please complete all required business and contact details.');
       return;
     }
+
+    setIsSubmitting(true);
 
     const newQuote: QuoteRequest = {
       id: `RFQ-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -62,9 +66,28 @@ export default function RequestQuotePage() {
       created_at: new Date().toISOString(),
     };
 
+    // Insert into Supabase Postgres DB if configured
+    if (isSupabaseConfigured()) {
+      try {
+        await supabase.from('quote_requests').insert({
+          id: newQuote.id,
+          business_name: newQuote.business_name,
+          contact_name: newQuote.contact_name,
+          contact_phone: newQuote.contact_phone,
+          contact_email: newQuote.contact_email,
+          delivery_pincode: newQuote.delivery_pincode,
+          status: newQuote.status,
+          notes: newQuote.notes
+        });
+      } catch (err) {
+        console.error('Supabase DB quote insert error (falling back to client state):', err);
+      }
+    }
+
     addQuoteRequest(newQuote);
     clearQuote();
     setSubmittedQuote(newQuote);
+    setIsSubmitting(false);
   };
 
   if (submittedQuote) {
@@ -288,9 +311,10 @@ export default function RequestQuotePage() {
 
           <button
             type="submit"
-            className="w-full bg-[#0A4D8C] hover:bg-[#083C6E] text-white text-sm font-bold py-3.5 rounded-xl shadow transition-all active:scale-95 flex items-center justify-center gap-2"
+            disabled={isSubmitting}
+            className="w-full bg-[#0A4D8C] hover:bg-[#083C6E] text-white text-sm font-bold py-3.5 rounded-xl shadow transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            <FileText className="w-4 h-4 text-[#F5A623]" /> Submit Official B2B RFQ
+            <FileText className="w-4 h-4 text-[#F5A623]" /> {isSubmitting ? 'Submitting to Database...' : 'Submit Official B2B RFQ'}
           </button>
         </form>
 
