@@ -13,7 +13,9 @@ import {
   MessageSquare,
   Droplet,
   MapPin,
-  Headphones
+  Headphones,
+  User,
+  PlusCircle
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -28,10 +30,10 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/search', label: 'Search', icon: Search },
-    { href: '/dealers', label: 'Depots', icon: MapPin },
     { href: '/request-quote', label: 'RFQ Quote', icon: FileText, badge: totalQuoteCount },
     { href: '/advisor', label: 'AI Advisor', icon: Sparkles, highlight: true },
-    { href: '/support', label: 'Support', icon: Headphones }
+    { href: '/admin', label: 'Add Items', icon: PlusCircle },
+    { href: '/profile', label: 'Profile', icon: User }
   ];
 
   return (
@@ -54,7 +56,26 @@ export default function Navbar() {
           </Link>
 
           {/* Header Action Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 text-xs font-bold bg-[#F5A623] hover:bg-amber-400 text-slate-950 px-3 py-1.5 rounded-full shadow transition-transform hover:scale-105"
+              title="Admin Portal - Add Items"
+            >
+              <PlusCircle className="w-4 h-4 text-slate-950" />
+              <span className="hidden sm:inline">Add Items (Admin)</span>
+              <span className="sm:hidden">Admin</span>
+            </Link>
+
+            <Link
+              href="/profile"
+              className="flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+              title="User Profile"
+            >
+              <User className="w-4 h-4 text-[#F5A623]" />
+              <span className="hidden md:inline">Profile</span>
+            </Link>
+
             <Link
               href="/dealers"
               className="hidden lg:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
@@ -65,10 +86,10 @@ export default function Navbar() {
 
             <Link
               href="/support"
-              className="hidden md:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+              className="hidden xl:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
             >
               <Headphones className="w-3.5 h-3.5 text-[#F5A623]" />
-              <span>Help Center</span>
+              <span>Help</span>
             </Link>
 
             <Link

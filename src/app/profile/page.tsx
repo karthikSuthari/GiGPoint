@@ -16,7 +16,8 @@ import {
   ChevronRight,
   LayoutDashboard,
   CheckCircle2,
-  Clock
+  Clock,
+  PlusCircle
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -157,19 +158,34 @@ export default function ProfilePage() {
 
         {/* Portals & Actions */}
         <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider pb-2 border-b border-slate-100">
-            Portals & Shortcuts
+          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider pb-2 border-b border-slate-100 flex items-center justify-between">
+            <span>Admin & User Shortcuts</span>
+            <span className="text-[10px] bg-blue-50 text-[#0A4D8C] font-extrabold px-2 py-0.5 rounded">Quick Access</span>
           </h2>
 
           <Link
-            href="/dashboard"
-            className="p-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold rounded-2xl flex items-center justify-between hover:scale-[1.01] transition-transform shadow-sm text-xs"
+            href="/admin"
+            className="p-3.5 bg-gradient-to-r from-[#0A4D8C] to-[#083C6E] text-white font-bold rounded-2xl flex items-center justify-between hover:scale-[1.01] transition-transform shadow-md text-xs"
           >
             <div className="flex items-center gap-2">
-              <LayoutDashboard className="w-5 h-5" />
-              <span>Distributor Vendor Upload Dashboard</span>
+              <PlusCircle className="w-5 h-5 text-[#F5A623]" />
+              <div>
+                <span className="block">Admin Portal – Add & Manage Items</span>
+                <span className="text-[10px] text-blue-200 font-normal">Add catalog products, set prices & stock</span>
+              </div>
             </div>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 text-[#F5A623]" />
+          </Link>
+
+          <Link
+            href="/dashboard"
+            className="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-between transition-colors text-xs"
+          >
+            <div className="flex items-center gap-2">
+              <LayoutDashboard className="w-4 h-4 text-amber-500" />
+              <span>Distributor Batch Upload Dashboard</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400" />
           </Link>
 
           <Link
