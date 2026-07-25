@@ -81,7 +81,7 @@ export const INITIAL_DEALERS: Dealer[] = [
     is_open_now: true
   },
   {
-    id: 'dealer-chennai-[#0A4D8C]',
+    id: 'dealer-chennai-hub',
     name: 'Chennai Port & South Logistics Hub',
     type: 'Authorized Stockist',
     city: 'Chennai',
@@ -97,7 +97,7 @@ export const INITIAL_DEALERS: Dealer[] = [
     is_open_now: true
   },
   {
-    id: 'dealer-[#0A4D8C]-express',
+    id: 'dealer-balanagar-express',
     name: 'Lubeswala Express Workshop Depot',
     type: 'Express Outlet',
     city: 'Hyderabad',

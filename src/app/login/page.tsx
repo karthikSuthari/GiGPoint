@@ -194,6 +194,69 @@ export default function LoginPage() {
               {isLoading ? 'Processing...' : loginMethod === 'phone' ? 'Get OTP Verification Code' : 'Sign In to Account'}
               <ArrowRight className="w-4 h-4" />
             </button>
+
+            {/* Quick Demo Preset Login Accounts */}
+            <div className="pt-4 border-t border-slate-100 space-y-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block text-center">
+                Quick Demo Presets (Database Seed Accounts)
+              </span>
+
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const userObj = {
+                      name: 'PetroBazaar Super Admin',
+                      role: 'admin',
+                      email: 'admin@petrobazaar.com',
+                      phone: '+91 93966 28880',
+                      business_name: 'PetroBazaar Corporate HQ'
+                    };
+                    localStorage.setItem('lubeswala_user', JSON.stringify(userObj));
+                    router.push('/admin');
+                  }}
+                  className="p-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 rounded-xl text-[11px] font-extrabold text-amber-950 transition-all text-center"
+                >
+                  👑 Admin
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const userObj = {
+                      name: 'Srinivas Rao (Nacharam Depot)',
+                      role: 'dealer',
+                      email: 'dealer.nacharam@petrobazaar.com',
+                      phone: '+91 93966 28880',
+                      business_name: 'PetroBazaar Central Stockist Hub'
+                    };
+                    localStorage.setItem('lubeswala_user', JSON.stringify(userObj));
+                    router.push('/dashboard');
+                  }}
+                  className="p-2 bg-blue-50 hover:bg-blue-100 border border-blue-300 rounded-xl text-[11px] font-extrabold text-blue-950 transition-all text-center"
+                >
+                  🏪 Stockist
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const userObj = {
+                      name: 'Srinivas Rao (Apex Industries)',
+                      role: 'customer',
+                      email: 'srinivas@apexindustries.in',
+                      phone: '+91 98888 77777',
+                      business_name: 'Apex Steel Industries'
+                    };
+                    localStorage.setItem('lubeswala_user', JSON.stringify(userObj));
+                    router.push('/profile');
+                  }}
+                  className="p-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 rounded-xl text-[11px] font-extrabold text-emerald-950 transition-all text-center"
+                >
+                  🏢 Buyer
+                </button>
+              </div>
+            </div>
           </form>
         ) : (
           /* OTP Verification Form */

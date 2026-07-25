@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { INITIAL_DEALERS, Dealer } from '@/lib/dealers';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { 
   MapPin, 
   Search, 
@@ -18,11 +19,28 @@ import {
 } from 'lucide-react';
 
 export default function DealersPage() {
+  const [dealers, setDealers] = useState<Dealer[]>(INITIAL_DEALERS);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [activeDealerId, setActiveDealerId] = useState<string>('dealer-hyd-hq');
 
-  const filteredDealers = INITIAL_DEALERS.filter((dealer) => {
+  useEffect(() => {
+    async function loadDealers() {
+      if (isSupabaseConfigured()) {
+        try {
+          const { data, error } = await supabase.from('dealers').select('*');
+          if (!error && data && data.length > 0) {
+            setDealers(data as Dealer[]);
+          }
+        } catch (err) {
+          console.error('Error fetching dealers from Supabase DB:', err);
+        }
+      }
+    }
+    loadDealers();
+  }, []);
+
+  const filteredDealers = dealers.filter((dealer) => {
     const matchesSearch =
       dealer.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
       dealer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -34,7 +52,7 @@ export default function DealersPage() {
     return matchesSearch && matchesType;
   });
 
-  const activeDealer = INITIAL_DEALERS.find((d) => d.id === activeDealerId) || INITIAL_DEALERS[0];
+  const activeDealer = dealers.find((d) => d.id === activeDealerId) || dealers[0];
 
   return (
     <div className="space-y-6">
