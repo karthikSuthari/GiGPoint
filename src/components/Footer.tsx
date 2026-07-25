@@ -13,7 +13,10 @@ import {
   Building2, 
   ArrowUpRight,
   User,
-  LayoutDashboard
+  LayoutDashboard,
+  Truck,
+  Layers,
+  PlusCircle
 } from 'lucide-react';
 
 export default function Footer() {
@@ -48,21 +51,26 @@ export default function Footer() {
 
         {/* Quick Navigation Links */}
         <div className="space-y-3">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider">Quick Navigation</h3>
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider">Services & Products</h3>
           <ul className="space-y-2 text-xs text-slate-400">
             <li>
-              <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
-                Product Catalog Overview
+              <Link href="/diesel-delivery" className="hover:text-white transition-colors flex items-center gap-1.5 text-emerald-400 font-bold">
+                <Truck className="w-3.5 h-3.5" /> Doorstep Mobile Diesel Delivery
+              </Link>
+            </li>
+            <li>
+              <Link href="/compare" className="hover:text-white transition-colors flex items-center gap-1.5 text-[#F5A623] font-bold">
+                <Layers className="w-3.5 h-3.5" /> Compare Product Specifications
               </Link>
             </li>
             <li>
               <Link href="/search" className="hover:text-white transition-colors flex items-center gap-1">
-                Catalog Search & Filters
+                Catalog Search & Brand Filters
               </Link>
             </li>
             <li>
               <Link href="/dealers" className="hover:text-white transition-colors flex items-center gap-1">
-                Regional Depots & Map
+                Regional Depots & Stockists Map
               </Link>
             </li>
             <li>
@@ -71,7 +79,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/advisor" className="hover:text-white transition-colors flex items-center gap-1 text-[#F5A623] font-bold">
+              <Link href="/advisor" className="hover:text-white transition-colors flex items-center gap-1 text-blue-300 font-semibold">
                 Groq AI Lubricant Advisor
               </Link>
             </li>
@@ -80,8 +88,13 @@ export default function Footer() {
 
         {/* Account & Merchant Portal */}
         <div className="space-y-3">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider">Portals & Support</h3>
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider">Portals & Admin</h3>
           <ul className="space-y-2 text-xs text-slate-400">
+            <li>
+              <Link href="/admin" className="hover:text-white transition-colors flex items-center gap-1.5 font-bold text-[#F5A623]">
+                <PlusCircle className="w-3.5 h-3.5" /> Admin Add Items Portal
+              </Link>
+            </li>
             <li>
               <Link href="/login" className="hover:text-white transition-colors flex items-center gap-1.5 font-semibold text-blue-300">
                 <User className="w-3.5 h-3.5" /> Buyer & Merchant Login
@@ -93,7 +106,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/dashboard" className="hover:text-white transition-colors flex items-center gap-1 font-semibold text-[#F5A623]">
+              <Link href="/dashboard" className="hover:text-white transition-colors flex items-center gap-1 font-semibold text-slate-300">
                 <LayoutDashboard className="w-3.5 h-3.5" /> Distributor Vendor Dashboard
               </Link>
             </li>
@@ -101,16 +114,6 @@ export default function Footer() {
               <Link href="/support" className="hover:text-white transition-colors flex items-center gap-1">
                 <Headphones className="w-3.5 h-3.5" /> Help Center & FAQs
               </Link>
-            </li>
-            <li>
-              <a 
-                href="https://petrobazaar.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="hover:text-white transition-colors inline-flex items-center gap-1 text-slate-400"
-              >
-                PetroBazaar Official Portal <ArrowUpRight className="w-3 h-3" />
-              </a>
             </li>
           </ul>
         </div>

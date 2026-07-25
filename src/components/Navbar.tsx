@@ -17,7 +17,9 @@ import {
   User,
   PlusCircle,
   LogIn,
-  UserPlus
+  UserPlus,
+  Truck,
+  Layers
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -43,8 +45,9 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/search', label: 'Search', icon: Search },
+    { href: '/diesel-delivery', label: 'Diesel Delivery', icon: Truck, highlight: true },
+    { href: '/compare', label: 'Compare', icon: Layers },
     { href: '/request-quote', label: 'RFQ Quote', icon: FileText, badge: totalQuoteCount },
-    { href: '/advisor', label: 'AI Advisor', icon: Sparkles, highlight: true },
     { href: '/admin', label: 'Add Items', icon: PlusCircle },
     { href: '/profile', label: 'Profile', icon: User }
   ];
@@ -85,6 +88,26 @@ export default function Navbar() {
 
           {/* Header Action Buttons */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            {/* Doorstep Diesel Bowser Button */}
+            <Link
+              href="/diesel-delivery"
+              className="hidden lg:flex items-center gap-1.5 text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3 py-1.5 rounded-full shadow transition-transform hover:scale-105"
+              title="Doorstep Mobile Bowser Diesel Delivery"
+            >
+              <Truck className="w-4 h-4 text-slate-950" />
+              <span>Doorstep Diesel</span>
+            </Link>
+
+            {/* Compare Products Button */}
+            <Link
+              href="/compare"
+              className="hidden xl:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+              title="Compare Lubricant Specifications"
+            >
+              <Layers className="w-3.5 h-3.5 text-[#F5A623]" />
+              <span>Compare Specs</span>
+            </Link>
+
             {/* Admin Add Items Button */}
             <Link
               href="/admin"
@@ -109,17 +132,17 @@ export default function Navbar() {
             {/* Login / Sign Up */}
             <Link
               href="/login"
-              className="hidden lg:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition-colors"
               title="Login or Sign Up"
             >
               <LogIn className="w-3.5 h-3.5 text-blue-200" />
-              <span>Login / Sign Up</span>
+              <span>Login</span>
             </Link>
 
             {/* Bulk RFQ */}
             <Link
               href="/request-quote"
-              className="hidden xl:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
+              className="hidden 2xl:flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-blue-100 px-3 py-1.5 rounded-full border border-white/20 transition-colors"
             >
               <FileText className="w-4 h-4 text-[#F5A623]" />
               <span>Bulk RFQ</span>
