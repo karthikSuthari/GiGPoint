@@ -1,0 +1,220 @@
+'use client';
+
+import React, { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { INITIAL_PRODUCTS } from '@/lib/data';
+import { useCartStore } from '@/store/useCartStore';
+import { 
+  ArrowLeft, 
+  ShoppingCart, 
+  FileText, 
+  Check, 
+  ShieldCheck, 
+  Truck, 
+  ChevronDown, 
+  ChevronUp,
+  Droplet
+} from 'lucide-react';
+
+export default function ProductDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const productId = params?.id as string;
+
+  const product = INITIAL_PRODUCTS.find((p) => p.id === productId) || INITIAL_PRODUCTS[0];
+  const addToCart = useCartStore((state) => state.addToCart);
+  const addToQuote = useCartStore((state) => state.addToQuote);
+
+  const [quantity, setQuantity] = useState(1);
+  const [addedCart, setAddedCart] = useState(false);
+  const [addedQuote, setAddedQuote] = useState(false);
+  const [showSpecs, setShowSpecs] = useState(true);
+
+  const handleBuyNow = () => {
+    addToCart(product, quantity);
+    setAddedCart(true);
+    setTimeout(() => {
+      router.push('/cart');
+    }, 600);
+  };
+
+  const handleRequestQuote = () => {
+    addToQuote(product, quantity);
+    setAddedQuote(true);
+    setTimeout(() => {
+      router.push('/request-quote');
+    }, 600);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Back Button */}
+      <Link
+        href="/"
+        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0A4D8C] hover:underline"
+      >
+        <ArrowLeft className="w-4 h-4" /> Back to Catalog
+      </Link>
+
+      {/* Main Product Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+        {/* Product Image Gallery */}
+        <div className="space-y-3">
+          <div className="h-72 md:h-96 rounded-2xl overflow-hidden bg-slate-100 relative">
+            {/* eslint-disable-next-html-element-suppression */}
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+              <span className="bg-[#0A4D8C] text-white text-xs font-bold px-2.5 py-1 rounded-md shadow">
+                {product.brand}
+              </span>
+              <span className="bg-[#F5A623] text-gray-900 text-xs font-extrabold px-2.5 py-1 rounded-md shadow">
+                Grade: {product.grade}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
+            <span>Guaranteed 100% genuine sealed container direct from manufacturer distribution.</span>
+          </div>
+        </div>
+
+        {/* Product Info & Actions */}
+        <div className="flex flex-col justify-between space-y-4">
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Category: {product.category_slug}
+              </span>
+              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                In Stock ({product.stock_qty} available)
+              </span>
+            </div>
+
+            <h1 className="text-xl md:text-2xl font-extrabold text-slate-900 mt-2">
+              {product.name}
+            </h1>
+
+            <div className="mt-4 flex items-baseline gap-2">
+              <span className="text-sm font-semibold text-slate-400">₹</span>
+              <span className="text-3xl font-black text-[#0A4D8C]">
+                {product.price_inr.toLocaleString('en-IN')}
+              </span>
+              <span className="text-xs text-slate-500 font-medium">/ {product.unit}</span>
+            </div>
+
+            <p className="mt-4 text-sm text-slate-600 leading-relaxed">
+              {product.description}
+            </p>
+
+            {/* Quantity Stepper */}
+            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-4">
+              <span className="text-xs font-bold text-slate-700">Quantity:</span>
+              <div className="flex items-center border border-slate-300 rounded-xl overflow-hidden bg-slate-50">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-3 py-1.5 text-slate-700 hover:bg-slate-200 font-bold"
+                >
+                  -
+                </button>
+                <span className="px-4 py-1.5 text-sm font-bold text-slate-900">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-3 py-1.5 text-slate-700 hover:bg-slate-200 font-bold"
+                >
+                  +
+                </button>
+              </div>
+              <span className="text-xs text-slate-500 font-medium">
+                Total: ₹ {(product.price_inr * quantity).toLocaleString('en-IN')}
+              </span>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="space-y-3 pt-4 border-t border-slate-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                onClick={handleBuyNow}
+                className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold shadow-md transition-all ${
+                  addedCart
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-[#0A4D8C] hover:bg-[#083C6E] text-white active:scale-95'
+                }`}
+              >
+                {addedCart ? <Check className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}
+                Buy Now (Retail)
+              </button>
+
+              <button
+                onClick={handleRequestQuote}
+                className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold border transition-all ${
+                  addedQuote
+                    ? 'bg-amber-100 text-amber-900 border-amber-300'
+                    : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300 active:scale-95'
+                }`}
+              >
+                {addedQuote ? <Check className="w-5 h-5" /> : <FileText className="w-5 h-5 text-amber-700" />}
+                Request Bulk RFQ
+              </button>
+            </div>
+
+            <p className="text-[11px] text-center text-slate-500">
+              ⚡ Need 50+ buckets or drum tankers? Request a quote for corporate GST pricing.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Technical Specifications Accordion */}
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <button
+          onClick={() => setShowSpecs(!showSpecs)}
+          className="w-full p-5 flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition-colors font-bold text-slate-900 text-sm md:text-base border-b border-slate-200"
+        >
+          <div className="flex items-center gap-2">
+            <Droplet className="w-5 h-5 text-[#0A4D8C]" />
+            Technical Specifications Sheet
+          </div>
+          {showSpecs ? <ChevronUp className="w-5 h-5 text-slate-500" /> : <ChevronDown className="w-5 h-5 text-slate-500" />}
+        </button>
+
+        {showSpecs && (
+          <div className="p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {Object.entries(product.spec_sheet).map(([key, value]) => (
+                <div key={key} className="bg-slate-50 p-3.5 rounded-xl border border-slate-100 flex flex-col justify-between">
+                  <span className="text-xs font-semibold text-slate-500">{key}</span>
+                  <span className="text-sm font-bold text-slate-900 mt-1">{value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Delivery & Assurance */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-3">
+          <Truck className="w-8 h-8 text-[#0A4D8C] shrink-0" />
+          <div>
+            <h4 className="text-xs font-bold text-slate-900">Direct Transport Delivery</h4>
+            <p className="text-[11px] text-slate-500">Dispatched within 24-48 hours with live shipment tracking.</p>
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center gap-3">
+          <ShieldCheck className="w-8 h-8 text-[#F5A623] shrink-0" />
+          <div>
+            <h4 className="text-xs font-bold text-slate-900">Quality Certified Batch</h4>
+            <p className="text-[11px] text-slate-500">Includes manufacturer test report & viscosity compliance certificate.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
