@@ -22,6 +22,7 @@ export default function ProductComparePage() {
   const addToCart = useCartStore((state) => state.addToCart);
   const addToQuote = useCartStore((state) => state.addToQuote);
   const compareItems = useCartStore((state) => state.compareItems);
+  const addToCompare = useCartStore((state) => state.addToCompare);
   const removeFromCompare = useCartStore((state) => state.removeFromCompare);
 
   const initialIds = compareItems.length > 0
@@ -40,9 +41,14 @@ export default function ProductComparePage() {
     .map((id) => INITIAL_PRODUCTS.find((p) => p.id === id))
     .filter(Boolean) as Product[];
 
-  const handleSelectProduct = (index: number, id: string) => {
+  const handleSelectProduct = (index: number, newId: string) => {
+    const oldId = selectedProductIds[index];
+    if (oldId) removeFromCompare(oldId);
+    const newProduct = INITIAL_PRODUCTS.find((p) => p.id === newId);
+    if (newProduct) addToCompare(newProduct);
+
     const updated = [...selectedProductIds];
-    updated[index] = id;
+    updated[index] = newId;
     setSelectedProductIds(updated);
   };
 
@@ -59,6 +65,7 @@ export default function ProductComparePage() {
     if (selectedProductIds.length < 4) {
       const unused = INITIAL_PRODUCTS.find((p) => !selectedProductIds.includes(p.id));
       if (unused) {
+        addToCompare(unused);
         setSelectedProductIds([...selectedProductIds, unused.id]);
       }
     }
@@ -141,8 +148,18 @@ export default function ProductComparePage() {
                         </div>
 
                         {product && (
-                          <div className="pt-2 space-y-1">
-                            <span className="text-[10px] font-extrabold uppercase bg-[#0A4D8C] text-white px-2 py-0.5 rounded">
+                          <div className="pt-2 space-y-2">
+                            <div className="w-full h-24 bg-slate-50 rounded-xl overflow-hidden p-1 border border-slate-100 flex items-center justify-center">
+                              <img
+                                src={product.image_url}
+                                alt={product.name}
+                                onError={(e) => {
+                                  (e.currentTarget as HTMLImageElement).src = 'https://cdn.shopify.com/s/files/1/0795/3560/3991/files/Servo_4T_20W40_front_-removebg-preview.png?v=1740700386';
+                                }}
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <span className="text-[10px] font-extrabold uppercase bg-[#0A4D8C] text-white px-2 py-0.5 rounded inline-block">
                               {product.grade}
                             </span>
                             <h3 className="font-extrabold text-slate-900 text-xs line-clamp-2">{product.name}</h3>

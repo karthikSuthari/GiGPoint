@@ -29,11 +29,13 @@ export default function CompareBar() {
               className="relative group bg-slate-800 border border-slate-700 rounded-xl p-1 shrink-0 flex items-center gap-1.5 pr-2"
             >
               <div className="w-8 h-8 relative rounded-lg overflow-hidden bg-white shrink-0">
-                <Image
-                  src={product.image_url || '/placeholder.png'}
+                <img
+                  src={product.image_url}
                   alt={product.name}
-                  fill
-                  className="object-contain p-0.5"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = 'https://cdn.shopify.com/s/files/1/0795/3560/3991/files/Servo_4T_20W40_front_-removebg-preview.png?v=1740700386';
+                  }}
+                  className="w-full h-full object-contain p-0.5"
                 />
               </div>
               <span className="text-[11px] font-bold max-w-[100px] truncate text-slate-200">

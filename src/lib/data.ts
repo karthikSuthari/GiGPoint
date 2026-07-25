@@ -204,16 +204,17 @@ export const INITIAL_PRODUCTS: Product[] = [
     "name": "SERVO 4T 20W40",
     "brand": "Indian Oil",
     "grade": "Four-Stroke Motorcycle Oil",
-    "description": "Official SERVO 4T 20W40 from Lubeswala. Guaranteed genuine factory sealed packaging.",
-    "price_inr": 46053.63,
-    "unit": "210 Liters Barrel",
+    "description": "High-performance 4-stroke motorcycle engine oil formulated for smooth clutch engagement, wear protection, and thermal stability in two-wheelers.",
+    "price_inr": 340,
+    "unit": "1 Litre Bottle",
     "stock_qty": 150,
     "image_url": "https://cdn.shopify.com/s/files/1/0795/3560/3991/files/Servo_4T_20W40_front_-removebg-preview.png?v=1740700386",
     "spec_sheet": {
-      "Manufacturer": "Indian Oil",
-      "Volume / Packaging": "210 Liters Barrel",
-      "Product SKU": "servo-4t-20w40-4-stroke-engine-oil-two-wheelers",
-      "Authenticity": "100% Sealed Factory Pack"
+      "Manufacturer": "Indian Oil (IOCL)",
+      "Volume / Packaging": "1 Litre Bottle (Bulk 210L Drum Available)",
+      "Viscosity Grade": "20W-40 API SL / JASO MA2",
+      "Application": "4-Stroke Motorcycles & Scooters",
+      "Authenticity": "100% Genuine Sealed Pack"
     },
     "is_bulk_available": true
   },
