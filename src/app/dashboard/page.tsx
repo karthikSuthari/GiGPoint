@@ -44,6 +44,7 @@ export default function VendorDealerDashboardPage() {
 
   // Active Tab: 'orders' | 'pos' | 'qr' | 'analytics'
   const [activeTab, setActiveTab] = useState<'orders' | 'pos' | 'qr' | 'analytics'>('orders');
+  const [timePeriod, setTimePeriod] = useState<string>('july_2026');
 
   // Offline POS Form State
   const [selectedProductId, setSelectedProductId] = useState<string>(INITIAL_PRODUCTS[0]?.id || '');
@@ -459,41 +460,177 @@ export default function VendorDealerDashboardPage() {
         </div>
       )}
 
-      {/* TAB 3: SALES & VOLUME ANALYTICS */}
+      {/* TAB 3: SALES & VOLUME ANALYTICS (MONTH-WISE, YEAR-WISE & SKU PRODUCT BREAKDOWN) */}
       {activeTab === 'analytics' && (
         <div className="space-y-6">
-          <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-base font-extrabold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-3">
-              Sales Revenue Breakdown (Online Auto-Routed vs Offline Counter)
-            </h2>
+          <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+              <div>
+                <h2 className="text-xl font-extrabold text-slate-900">
+                  Sales Revenue & Product Volume Analytics
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Month-wise and year-wise breakdown of online auto-routed orders vs offline counter POS sales by Liters & SKU.
+                </p>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Online Sales Widget */}
-              <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl space-y-2">
+              {/* Time Period Filter Selector */}
+              <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold shrink-0">
+                <span className="text-slate-500 px-2">Period:</span>
+                <select
+                  value={timePeriod}
+                  onChange={(e) => setTimePeriod(e.target.value)}
+                  className="bg-white p-2 rounded-xl border border-slate-200 text-slate-900 font-extrabold focus:outline-none focus:ring-2 focus:ring-[#0A4D8C]"
+                >
+                  <option value="all">All Time</option>
+                  <option value="july_2026">This Month (July 2026)</option>
+                  <option value="june_2026">Last Month (June 2026)</option>
+                  <option value="ytd_2026">Year-to-Date (2026)</option>
+                  <option value="fy_2025">2025 Financial Year</option>
+                </select>
+              </div>
+            </div>
+
+            {/* High-Level Revenue & Volume Comparison Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Online Sales Card */}
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 p-5 rounded-2xl space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-blue-900">Online Auto-Routed Sales</span>
-                  <span className="bg-[#0A4D8C] text-white text-[10px] font-bold px-2 py-0.5 rounded">2-Hour Delivery</span>
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-[#0A4D8C]">Online Auto-Routed</span>
+                  <span className="bg-[#0A4D8C] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">2-Hour Express</span>
                 </div>
                 <div className="text-3xl font-black text-[#0A4D8C]">
                   ₹ {totalOnlineRevenue.toLocaleString('en-IN')}
                 </div>
-                <p className="text-xs text-blue-800">
-                  Generated via PetroBazaar smart routing algorithm based on buyer distance & local stock availability.
-                </p>
+                <div className="flex justify-between text-xs text-blue-900 font-semibold pt-1 border-t border-blue-200/60">
+                  <span>Volume: 640 Liters</span>
+                  <span>Orders: {onlineOrders.length}</span>
+                </div>
               </div>
 
-              {/* Offline Sales Widget */}
-              <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl space-y-2">
+              {/* Offline Sales Card */}
+              <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-200 p-5 rounded-2xl space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-900">Offline Counter Walk-in Sales</span>
-                  <span className="bg-amber-500 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded">QR POS</span>
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-amber-900">Offline Counter Sales</span>
+                  <span className="bg-[#F5A623] text-slate-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full">QR POS</span>
                 </div>
                 <div className="text-3xl font-black text-amber-700">
                   ₹ {totalOfflineRevenue.toLocaleString('en-IN')}
                 </div>
-                <p className="text-xs text-amber-800">
-                  Logged directly over the shop counter via Stockist POS Barcode scanner.
-                </p>
+                <div className="flex justify-between text-xs text-amber-900 font-semibold pt-1 border-t border-amber-200/60">
+                  <span>Volume: 320 Liters</span>
+                  <span>Sales: {offlineOrders.length}</span>
+                </div>
+              </div>
+
+              {/* Total Combined Volume Card */}
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl space-y-2 shadow-md">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-amber-400">Total Product Volume</span>
+                  <span className="bg-emerald-500 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded">+18.4% MoM</span>
+                </div>
+                <div className="text-3xl font-black text-white">
+                  960 Liters Total
+                </div>
+                <div className="flex justify-between text-xs text-slate-300 font-semibold pt-1 border-t border-slate-700">
+                  <span>Gross Sales: ₹ {(totalOnlineRevenue + totalOfflineRevenue).toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Month-Wise Sales Trend (Visual Bar Chart) */}
+            <div className="bg-slate-50 border border-slate-200 p-5 rounded-2xl space-y-4">
+              <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center justify-between">
+                <span>Month-Wise Sales & Volume Growth Trend (2026)</span>
+                <span className="text-xs text-slate-500 font-normal">Updated Live</span>
+              </h3>
+
+              <div className="grid grid-cols-7 gap-2 items-end h-40 pt-4">
+                {[
+                  { month: 'Jan', revenue: '₹ 1.2L', liters: '450L', height: '40%' },
+                  { month: 'Feb', revenue: '₹ 1.8L', liters: '580L', height: '55%' },
+                  { month: 'Mar', revenue: '₹ 2.4L', liters: '720L', height: '70%' },
+                  { month: 'Apr', revenue: '₹ 2.1L', liters: '640L', height: '60%' },
+                  { month: 'May', revenue: '₹ 2.9L', liters: '890L', height: '85%' },
+                  { month: 'Jun', revenue: '₹ 3.1L', liters: '920L', height: '90%' },
+                  { month: 'Jul (Current)', revenue: `₹ ${((totalOnlineRevenue + totalOfflineRevenue)/1000).toFixed(1)}k`, liters: '960L', height: '100%', active: true }
+                ].map((m, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5 h-full justify-end group">
+                    <span className="text-[10px] font-bold text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {m.liters}
+                    </span>
+                    <div
+                      style={{ height: m.height }}
+                      className={`w-full rounded-t-xl transition-all duration-300 ${
+                        m.active
+                          ? 'bg-gradient-to-t from-[#0A4D8C] to-[#F5A623] shadow-md ring-2 ring-amber-300'
+                          : 'bg-slate-300 hover:bg-[#0A4D8C]'
+                      }`}
+                    />
+                    <span className={`text-[10px] font-extrabold ${m.active ? 'text-[#0A4D8C]' : 'text-slate-500'}`}>
+                      {m.month}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Product-Wise Sales Matrix Table (Name, Unit, Liters Sold, Online vs Offline Revenue) */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+                Full Product SKU Sales Breakdown
+              </h3>
+
+              <div className="overflow-x-auto border border-slate-200 rounded-2xl">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-100 text-slate-700 uppercase font-extrabold border-b border-slate-200">
+                    <tr>
+                      <th className="p-3">Product Name & SKU</th>
+                      <th className="p-3">Brand</th>
+                      <th className="p-3">Packaging Volume</th>
+                      <th className="p-3 text-center">Online Auto-Routed</th>
+                      <th className="p-3 text-center">Offline Counter POS</th>
+                      <th className="p-3 text-right">Unit Price</th>
+                      <th className="p-3 text-right">Total Revenue</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-medium">
+                    {INITIAL_PRODUCTS.slice(0, 8).map((product, idx) => {
+                      const onlineCount = idx % 2 === 0 ? 3 : 1;
+                      const offlineCount = idx % 3 === 0 ? 2 : 1;
+                      const totalQty = onlineCount + offlineCount;
+                      const totalRev = totalQty * product.price_inr;
+
+                      return (
+                        <tr key={product.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="p-3 font-bold text-slate-900">
+                            {product.name}
+                          </td>
+                          <td className="p-3 text-slate-600">
+                            <span className="bg-slate-100 text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                              {product.brand}
+                            </span>
+                          </td>
+                          <td className="p-3 text-[#0A4D8C] font-semibold">
+                            {product.unit}
+                          </td>
+                          <td className="p-3 text-center font-bold text-blue-900">
+                            {onlineCount} Orders
+                          </td>
+                          <td className="p-3 text-center font-bold text-amber-900">
+                            {offlineCount} Counter Sales
+                          </td>
+                          <td className="p-3 text-right font-semibold text-slate-700">
+                            ₹ {product.price_inr.toLocaleString('en-IN')}
+                          </td>
+                          <td className="p-3 text-right font-black text-[#0A4D8C]">
+                            ₹ {totalRev.toLocaleString('en-IN')}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
