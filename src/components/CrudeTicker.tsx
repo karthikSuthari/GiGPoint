@@ -13,36 +13,35 @@ interface TickerItem {
 
 export default function CrudeTicker() {
   const [tickerData, setTickerData] = useState<TickerItem[]>([
-    { symbol: 'BRENT', name: 'Brent Crude', price: '$78.45/bbl', change: '+1.2%', isUp: true },
-    { symbol: 'WTI', name: 'WTI Crude', price: '$74.20/bbl', change: '+0.8%', isUp: true },
-    { symbol: 'FO180', name: 'Furnace Oil 180', price: '₹52,500/KL', change: '-0.5%', isUp: false },
-    { symbol: 'LDO', name: 'Light Diesel Oil', price: '₹68,000/KL', change: '+0.3%', isUp: true },
-    { symbol: 'BIT-VG30', name: 'Bitumen VG-30', price: '₹44,500/MT', change: '+0.0%', isUp: true },
-    { symbol: 'HSD', name: 'Commercial Diesel', price: '₹89.62/L', change: '-0.2%', isUp: false },
-    { symbol: 'LVFO80', name: 'Low Viscosity FO', price: '₹54,200/KL', change: '+0.6%', isUp: true },
-    { symbol: 'TPO', name: 'Tyre Pyrolysis', price: '₹47,800/KL', change: '-0.1%', isUp: false }
+    { symbol: 'BRENT', name: 'Brent Crude', price: '$78.45/bbl', change: '+1.45%', isUp: true },
+    { symbol: 'WTI', name: 'WTI Crude', price: '$74.20/bbl', change: '+0.82%', isUp: true },
+    { symbol: 'FO180', name: 'Furnace Oil 180', price: '₹50,993/KL', change: '-0.35%', isUp: false },
+    { symbol: 'LDO', name: 'Light Diesel Oil', price: '₹65,271/KL', change: '+0.50%', isUp: true },
+    { symbol: 'BIT-VG30', name: 'Bitumen VG-30', price: '₹42,078/MT', change: '+0.15%', isUp: true },
+    { symbol: 'HSD', name: 'Commercial Diesel', price: '₹89.62/L', change: '+0.00%', isUp: true },
+    { symbol: 'LVFO80', name: 'Low Viscosity FO', price: '₹52,522/KL', change: '+0.40%', isUp: true }
   ]);
 
   const [lastUpdated, setLastUpdated] = useState<string>('Live');
 
-  // Auto tick simulation every 6 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTickerData((prev) =>
-        prev.map((item) => {
-          const delta = (Math.random() * 0.4 - 0.2).toFixed(2);
-          const numChange = parseFloat(delta);
-          const isUp = numChange >= 0;
-          return {
-            ...item,
-            change: `${isUp ? '+' : ''}${delta}%`,
-            isUp
-          };
-        })
-      );
-      setLastUpdated(new Date().toLocaleTimeString('en-US', { hour12: false }));
-    }, 6000);
+    async function fetchLiveTicker() {
+      try {
+        const res = await fetch('/api/ticker');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.items && json.items.length > 0) {
+            setTickerData(json.items);
+            setLastUpdated(new Date().toLocaleTimeString('en-US', { hour12: false }));
+          }
+        }
+      } catch (err) {
+        console.error('Ticker fetch error:', err);
+      }
+    }
 
+    fetchLiveTicker();
+    const interval = setInterval(fetchLiveTicker, 15000);
     return () => clearInterval(interval);
   }, []);
 
