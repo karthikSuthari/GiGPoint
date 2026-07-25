@@ -68,17 +68,29 @@ CREATE TABLE IF NOT EXISTS orders (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- RLS & Grants (Postgres Post-2026 Security Compliance)
-GRANT SELECT ON categories, products TO anon, authenticated;
-GRANT SELECT, INSERT, UPDATE ON quote_requests, quote_items, orders TO anon, authenticated;
+-- RLS & Grants (Postgres Security Compliance)
+GRANT ALL ON categories, products, quote_requests, quote_items, orders TO anon, authenticated;
 
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE quote_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Public categories read" ON categories;
+DROP POLICY IF EXISTS "Public products read" ON products;
+DROP POLICY IF EXISTS "Public products insert" ON products;
+DROP POLICY IF EXISTS "Public products update" ON products;
+DROP POLICY IF EXISTS "Public products delete" ON products;
+DROP POLICY IF EXISTS "Public quote insert" ON quote_requests;
+DROP POLICY IF EXISTS "Public quote select" ON quote_requests;
+DROP POLICY IF EXISTS "Public orders insert" ON orders;
+DROP POLICY IF EXISTS "Public orders select" ON orders;
+
 CREATE POLICY "Public categories read" ON categories FOR SELECT USING (true);
 CREATE POLICY "Public products read" ON products FOR SELECT USING (true);
+CREATE POLICY "Public products insert" ON products FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public products update" ON products FOR UPDATE USING (true);
+CREATE POLICY "Public products delete" ON products FOR DELETE USING (true);
 CREATE POLICY "Public quote insert" ON quote_requests FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public quote select" ON quote_requests FOR SELECT USING (true);
 CREATE POLICY "Public orders insert" ON orders FOR INSERT WITH CHECK (true);
