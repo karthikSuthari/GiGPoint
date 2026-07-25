@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
+import AIChatBot from '@/components/AIChatBot';
 
 export const metadata: Metadata = {
-  title: 'Lubeswala.com — Mobile Commerce & Lubricant Marketplace',
-  description: 'Nationwide B2B & B2C petroleum and lubricant product marketplace. Buy engine oil, brake fluids, industrial greases, and furnace oil with guided AI advisor and RFQ quote tracking.',
-  keywords: ['Lubeswala', 'Petro Bazaar', 'Engine Oil', 'Servo', 'HP Lubes', 'B2B Lubricants', 'Furnace Oil', 'Mobil', 'Castrol'],
+  title: 'Lubeswala.com — PetroBazaar Mobile Commerce Platform',
+  description: 'Nationwide B2B & B2C petroleum marketplace. Buy Furnace Oil (FO), LDO, Bitumen VG-30, HP/Servo lubricants with live Groq Llama-3 AI Assistant and RFQ quote tracking.',
+  keywords: ['PetroBazaar', 'Lubeswala', 'Furnace Oil', 'LDO', 'Bitumen', 'Engine Oil', 'Servo', 'HP Lubes', 'Pyrolysis Oil'],
 };
 
 export default function RootLayout({
@@ -21,11 +22,14 @@ export default function RootLayout({
           {children}
         </main>
         
+        {/* Floating Groq Llama-3 Database-Connected AI Chatbot */}
+        <AIChatBot />
+
         {/* Footer for desktop view */}
         <footer className="hidden md:block bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-center text-sm">
           <div className="max-w-7xl mx-auto px-4">
-            <p className="font-semibold text-slate-200">Lubeswala.com — Trust Built In</p>
-            <p className="mt-1 text-xs text-slate-500">Official Mobile Commerce Platform for Petro Bazaar (B2B & B2C Lubricant Distribution)</p>
+            <p className="font-semibold text-slate-200">PetroBazaar & Lubeswala.com — Official Mobile Commerce Platform</p>
+            <p className="mt-1 text-xs text-slate-500">Updates of crude markets, industrial fuels (FO/LDO), bitumen & lubricants distribution across India</p>
           </div>
         </footer>
       </body>
