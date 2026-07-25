@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { INITIAL_PRODUCTS } from '@/lib/data';
 import { Product } from '@/types';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { 
   ShieldCheck, 
   Upload, 
@@ -33,6 +34,7 @@ export default function AdminAddItemsPage() {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
   const [editPriceValue, setEditPriceValue] = useState('');
+  const [dbStatus, setDbStatus] = useState<'connected' | 'fallback'>('fallback');
 
   // Form State for Add Item
   const [productName, setProductName] = useState('');
@@ -49,13 +51,33 @@ export default function AdminAddItemsPage() {
   const [certFileName, setCertFileName] = useState('');
   const [isBulkAvailable, setIsBulkAvailable] = useState(true);
 
+  // Load Products from Supabase DB if connected
+  useEffect(() => {
+    async function loadDbProducts() {
+      if (isSupabaseConfigured()) {
+        try {
+          const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+          if (!error && data && data.length > 0) {
+            setProducts(data as Product[]);
+            setDbStatus('connected');
+          } else if (isSupabaseConfigured()) {
+            setDbStatus('connected');
+          }
+        } catch (err) {
+          console.error('Supabase DB connection load error:', err);
+        }
+      }
+    }
+    loadDbProducts();
+  }, []);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setCertFileName(e.target.files[0].name);
     }
   };
 
-  const handleAddProduct = (e: React.FormEvent) => {
+  const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!productName || !priceInr || !grade) {
@@ -86,30 +108,63 @@ export default function AdminAddItemsPage() {
       is_bulk_available: isBulkAvailable
     };
 
-    setTimeout(() => {
-      setProducts([newProduct, ...products]);
-      setIsUploading(false);
-      setUploadSuccess(true);
-      setTimeout(() => setUploadSuccess(false), 3500);
+    // Insert into Supabase DB if configured
+    if (isSupabaseConfigured()) {
+      try {
+        await supabase.from('products').insert({
+          category_slug: categorySlug,
+          name: productName,
+          brand,
+          grade,
+          description: newProduct.description,
+          price_inr: newProduct.price_inr,
+          unit: newProduct.unit,
+          stock_qty: newProduct.stock_qty,
+          image_url: newProduct.image_url,
+          spec_sheet: newProduct.spec_sheet,
+          is_bulk_available: isBulkAvailable
+        });
+      } catch (err) {
+        console.error('Supabase product insert error:', err);
+      }
+    }
 
-      // Reset form
-      setProductName('');
-      setPriceInr('');
-      setDescription('');
-      setCertFileName('');
-      setGrade('');
-    }, 600);
+    setProducts([newProduct, ...products]);
+    setIsUploading(false);
+    setUploadSuccess(true);
+    setTimeout(() => setUploadSuccess(false), 3500);
+
+    // Reset form
+    setProductName('');
+    setPriceInr('');
+    setDescription('');
+    setCertFileName('');
+    setGrade('');
   };
 
-  const handleDeleteProduct = (id: string) => {
+  const handleDeleteProduct = async (id: string) => {
     if (confirm('Are you sure you want to delete this product listing from the database?')) {
+      if (isSupabaseConfigured()) {
+        try {
+          await supabase.from('products').delete().eq('id', id);
+        } catch (err) {
+          console.error('Supabase delete product error:', err);
+        }
+      }
       setProducts(products.filter((p) => p.id !== id));
     }
   };
 
-  const handleSavePriceEdit = (id: string) => {
+  const handleSavePriceEdit = async (id: string) => {
     const numericPrice = parseFloat(editPriceValue);
     if (!isNaN(numericPrice) && numericPrice > 0) {
+      if (isSupabaseConfigured()) {
+        try {
+          await supabase.from('products').update({ price_inr: numericPrice }).eq('id', id);
+        } catch (err) {
+          console.error('Supabase price update error:', err);
+        }
+      }
       setProducts(
         products.map((p) => (p.id === id ? { ...p, price_inr: numericPrice } : p))
       );
