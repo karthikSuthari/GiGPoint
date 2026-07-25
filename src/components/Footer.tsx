@@ -91,8 +91,13 @@ export default function Footer() {
           <h3 className="text-sm font-bold text-white uppercase tracking-wider">Portals & Admin</h3>
           <ul className="space-y-2 text-xs text-slate-400">
             <li>
+              <Link href="/dashboard" className="hover:text-white transition-colors flex items-center gap-1.5 font-bold text-amber-400">
+                <LayoutDashboard className="w-3.5 h-3.5" /> Stockist POS Dashboard
+              </Link>
+            </li>
+            <li>
               <Link href="/admin" className="hover:text-white transition-colors flex items-center gap-1.5 font-bold text-[#F5A623]">
-                <PlusCircle className="w-3.5 h-3.5" /> Admin Add Items Portal
+                <PlusCircle className="w-3.5 h-3.5" /> Admin Portal & Item Catalog
               </Link>
             </li>
             <li>

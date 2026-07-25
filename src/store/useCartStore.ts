@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { CartItem, Product, QuoteItem, QuoteRequest, Order } from '@/types';
+import { RoutedOrder } from '@/lib/orderRouting';
+import { INITIAL_DEALERS } from '@/lib/dealers';
 
 interface CartStore {
   cart: CartItem[];
@@ -7,6 +9,7 @@ interface CartStore {
   savedQuotes: QuoteRequest[];
   savedOrders: Order[];
   compareItems: Product[];
+  routedOrders: RoutedOrder[];
   
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
@@ -25,7 +28,81 @@ interface CartStore {
   removeFromCompare: (productId: string) => void;
   toggleCompare: (product: Product) => void;
   clearCompare: () => void;
+
+  addRoutedOrder: (order: RoutedOrder) => void;
+  updateOrderStatus: (orderId: string, status: RoutedOrder['status']) => void;
 }
+
+const INITIAL_ROUTED_ORDERS: RoutedOrder[] = [
+  {
+    orderId: 'ORD-8821',
+    customerName: 'Srinivas Rao (Apex Industries)',
+    customerPhone: '+91 93966 28880',
+    pincode: '500001',
+    address: 'Plot 12, Nacharam Industrial Area, Hyderabad',
+    items: [
+      {
+        product: {
+          id: 'lubes-bitumen-drum-vg30',
+          category_id: 'cat-3',
+          category_slug: 'bitumen',
+          name: 'Bitumen Drum VG 30 - 225 kgs(220 liters)',
+          brand: 'Lubeswala',
+          grade: 'Bitumen Drum',
+          description: 'Official Bitumen Drum VG 30 - 225 kgs(220 liters) from Lubeswala.',
+          price_inr: 15340,
+          unit: '225 Kg Steel Drum',
+          stock_qty: 150,
+          image_url: 'https://cdn.shopify.com/s/files/1/0795/3560/3991/files/bitumen_drum_white_background.png?v=1753145150',
+          spec_sheet: {},
+          is_bulk_available: true
+        },
+        quantity: 2
+      }
+    ],
+    totalAmount: 30680,
+    assignedDealer: INITIAL_DEALERS[0], // PetroBazaar HQ Nacharam
+    distanceKm: 2.4,
+    estimatedDeliveryTime: '2-Hour Local Express Delivery',
+    source: 'Online Auto-Routed',
+    status: 'assigned',
+    createdAt: '10 minutes ago'
+  },
+  {
+    orderId: 'ORD-8822',
+    customerName: 'Walk-in Workshop Counter',
+    customerPhone: '+91 98765 00000',
+    pincode: '500037',
+    address: 'Over-the-counter Balanagar Outlet',
+    items: [
+      {
+        product: {
+          id: 'lubes-servo-4t-20w40-4-stroke-engine-oil-two-wheelers',
+          category_id: 'cat-2',
+          category_slug: 'engine-oil',
+          name: 'SERVO 4T 20W40',
+          brand: 'Indian Oil',
+          grade: 'Four-Stroke Motorcycle Oil',
+          description: 'Official SERVO 4T 20W40',
+          price_inr: 340,
+          unit: '1 Litre Bottle',
+          stock_qty: 150,
+          image_url: 'https://cdn.shopify.com/s/files/1/0795/3560/3991/files/Servo_4T_20W40_front_-removebg-preview.png?v=1740700386',
+          spec_sheet: {},
+          is_bulk_available: false
+        },
+        quantity: 5
+      }
+    ],
+    totalAmount: 1700,
+    assignedDealer: INITIAL_DEALERS[5], // Balanagar Express Outlet
+    distanceKm: 0.1,
+    estimatedDeliveryTime: 'Instant Counter Sale (QR POS)',
+    source: 'Offline Counter',
+    status: 'delivered',
+    createdAt: '1 hour ago'
+  }
+];
 
 export const useCartStore = create<CartStore>((set) => ({
   cart: [],
@@ -33,6 +110,7 @@ export const useCartStore = create<CartStore>((set) => ({
   savedQuotes: [],
   savedOrders: [],
   compareItems: [],
+  routedOrders: INITIAL_ROUTED_ORDERS,
 
   addToCart: (product, quantity = 1) =>
     set((state) => {
@@ -135,4 +213,16 @@ export const useCartStore = create<CartStore>((set) => ({
     }),
 
   clearCompare: () => set({ compareItems: [] }),
+
+  addRoutedOrder: (order) =>
+    set((state) => ({
+      routedOrders: [order, ...state.routedOrders]
+    })),
+
+  updateOrderStatus: (orderId, status) =>
+    set((state) => ({
+      routedOrders: state.routedOrders.map((o) =>
+        o.orderId === orderId ? { ...o, status } : o
+      )
+    }))
 }));

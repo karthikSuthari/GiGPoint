@@ -19,7 +19,8 @@ import {
   LogIn,
   UserPlus,
   Truck,
-  Layers
+  Layers,
+  LayoutDashboard
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -45,10 +46,11 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/search', label: 'Search', icon: Search },
-    { href: '/diesel-delivery', label: 'Diesel Delivery', icon: Truck, highlight: true },
+    { href: '/diesel-delivery', label: 'Doorstep Diesel', icon: Truck, highlight: true },
+    { href: '/dashboard', label: 'Stockist Portal', icon: LayoutDashboard },
     { href: '/compare', label: 'Compare', icon: Layers },
     { href: '/request-quote', label: 'RFQ Quote', icon: FileText, badge: totalQuoteCount },
-    { href: '/admin', label: 'Add Items', icon: PlusCircle },
+    { href: '/admin', label: 'Admin', icon: PlusCircle },
     { href: '/profile', label: 'Profile', icon: User }
   ];
 

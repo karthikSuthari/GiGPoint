@@ -6,23 +6,26 @@ import Link from 'next/link';
 import { useCartStore } from '@/store/useCartStore';
 import { Order } from '@/types';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
-import { CheckCircle2, ShieldCheck, Truck, ArrowLeft } from 'lucide-react';
+import { routeOrderToNearestDealer, RoutedOrder } from '@/lib/orderRouting';
+import { CheckCircle2, ShieldCheck, Truck, ArrowLeft, Building2, MapPin } from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const cart = useCartStore((state) => state.cart);
   const clearCart = useCartStore((state) => state.clearCart);
   const addOrder = useCartStore((state) => state.addOrder);
+  const addRoutedOrder = useCartStore((state) => state.addRoutedOrder);
 
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [street, setStreet] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('Maharashtra');
-  const [pincode, setPincode] = useState('');
+  const [city, setCity] = useState('Hyderabad');
+  const [state, setState] = useState('Telangana');
+  const [pincode, setPincode] = useState('500001');
   const [paymentMethod, setPaymentMethod] = useState('Pay on Delivery');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState<Order | null>(null);
+  const [assignedInfo, setAssignedInfo] = useState<{ dealerName: string; distance: number; estTime: string } | null>(null);
 
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price_inr * item.quantity,
@@ -55,6 +58,32 @@ export default function CheckoutPage() {
       status: 'placed',
       created_at: new Date().toISOString(),
     };
+
+    // Run Smart Order Routing Algorithm to assign nearest stockist with inventory
+    const routingResult = routeOrderToNearestDealer(pincode, city, cart);
+
+    const routedOrder: RoutedOrder = {
+      orderId: newOrder.id,
+      customerName,
+      customerPhone,
+      pincode,
+      address: `${street}, ${city}, ${pincode}`,
+      items: [...cart],
+      totalAmount: grandTotal,
+      assignedDealer: routingResult.assignedDealer,
+      distanceKm: routingResult.distanceKm,
+      estimatedDeliveryTime: routingResult.estimatedDeliveryTime,
+      source: 'Online Auto-Routed',
+      status: 'assigned',
+      createdAt: 'Just now'
+    };
+
+    addRoutedOrder(routedOrder);
+    setAssignedInfo({
+      dealerName: routingResult.assignedDealer.name,
+      distance: routingResult.distanceKm,
+      estTime: routingResult.estimatedDeliveryTime
+    });
 
     // Insert into Supabase Postgres DB if configured
     if (isSupabaseConfigured()) {
@@ -92,7 +121,7 @@ export default function CheckoutPage() {
           <p className="text-xs text-slate-500 mt-1">Your lubricant order has been received and sent to dispatch.</p>
         </div>
 
-        <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left space-y-2 text-xs">
+        <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left space-y-2.5 text-xs">
           <div className="flex justify-between">
             <span className="text-slate-500 font-medium">Order Reference:</span>
             <span className="font-bold text-[#0A4D8C]">{orderPlaced.id}</span>
@@ -105,6 +134,21 @@ export default function CheckoutPage() {
             <span className="text-slate-500 font-medium">Total Amount:</span>
             <span className="font-bold text-slate-900">₹ {orderPlaced.total_inr.toLocaleString('en-IN')}</span>
           </div>
+
+          {assignedInfo && (
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-1">
+              <div className="flex items-center gap-1.5 font-extrabold text-[#0A4D8C]">
+                <Building2 className="w-3.5 h-3.5 text-[#F5A623]" />
+                <span>Assigned Stockist Outlet:</span>
+              </div>
+              <p className="font-bold text-slate-900">{assignedInfo.dealerName}</p>
+              <div className="flex justify-between text-[11px] text-blue-900 pt-1 border-t border-blue-200/60 font-semibold">
+                <span>Distance: {assignedInfo.distance} km</span>
+                <span className="text-emerald-700 font-extrabold">{assignedInfo.estTime}</span>
+              </div>
+            </div>
+          )}
+
           <div className="pt-2 border-t border-slate-200 text-slate-600">
             <span className="font-semibold block text-slate-800">Delivery Address:</span>
             {orderPlaced.delivery_address.street}, {orderPlaced.delivery_address.city}, {orderPlaced.delivery_address.state} - {orderPlaced.delivery_address.pincode}

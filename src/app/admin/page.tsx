@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { INITIAL_PRODUCTS } from '@/lib/data';
+import { INITIAL_DEALERS } from '@/lib/dealers';
 import { Product } from '@/types';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { 
@@ -22,7 +23,10 @@ import {
   Layers,
   Sparkles,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
+  MapPin,
+  Zap,
+  Truck
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -537,6 +541,56 @@ export default function AdminAddItemsPage() {
               ))
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Stockist Depots & Live Auto-Routing Log Section */}
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 bg-[#F5A623] text-slate-950 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider mb-1">
+              <Zap className="w-3.5 h-3.5" /> Order Routing Algorithm Monitoring
+            </div>
+            <h2 className="text-xl font-extrabold text-slate-900">
+              Authorized Stockist Depots & Live Order Routing Log
+            </h2>
+            <p className="text-xs text-slate-500">
+              Overview of registered regional stockist shops, stock availability, and distance-based auto-routing logs.
+            </p>
+          </div>
+
+          <Link
+            href="/dashboard"
+            className="bg-[#0A4D8C] hover:bg-[#083C6E] text-white text-xs font-extrabold px-4 py-2.5 rounded-xl shadow flex items-center gap-1.5"
+          >
+            <span>Open Vendor Stockist Dashboard</span>
+            <LayoutDashboard className="w-4 h-4 text-[#F5A623]" />
+          </Link>
+        </div>
+
+        {/* Depots List Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {INITIAL_DEALERS.map((dealer) => (
+            <div key={dealer.id} className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="bg-blue-100 text-[#0A4D8C] text-[10px] font-extrabold px-2 py-0.5 rounded">
+                  {dealer.type}
+                </span>
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                  {dealer.is_open_now ? '● Active Hub' : 'Closed'}
+                </span>
+              </div>
+              <h3 className="font-extrabold text-slate-900 text-sm">{dealer.name}</h3>
+              <div className="text-xs text-slate-500 flex items-center gap-1">
+                <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <span>{dealer.address} ({dealer.city}, {dealer.pincode})</span>
+              </div>
+              <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-600 font-semibold">
+                <span>Dist: {dealer.distance_km} km</span>
+                <span className="text-[#0A4D8C] font-bold">{dealer.phone}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
