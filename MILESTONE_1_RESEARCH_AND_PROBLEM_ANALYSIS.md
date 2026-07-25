@@ -22,6 +22,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 - **Dual Commerce Engine:** Instant retail checkout for small buyers & multi-item B2B RFQ quotation engine for commercial buyers.
 - **Groq Llama-3 Database AI:** Sub-second natural language AI recommendation engine and database-connected chatbot widget.
 - **Depot & Dealer Locator Map (`/dealers`):** Hyper-local GPS network map for 45-minute express workshop pickup.
+- **Distributor Vendor Portal (`/dashboard`):** Self-serve seller dashboard for distributors to upload product lines & batch test certificates.
 
 ---
 
@@ -93,12 +94,12 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Interactive GPS Network Map (`/dealers`)**</td>
 </tr>
 <tr>
-<td>**8. Instant Price Transparency**</td>
-<td>Opaque Margins</td>
-<td>Fixed Retail</td>
-<td>Hidden</td>
-<td>Retail Only</td>
-<td>**Wholesale & Retail Tiered**</td>
+<td>**8. Distributor Upload Portal**</td>
+<td>No</td>
+<td>No</td>
+<td>Directory Form</td>
+<td>Complex Seller Central</td>
+<td>**Dedicated Vendor Dashboard (`/dashboard`)**</td>
 </tr>
 <tr>
 <td>**9. GST Tax Invoice Audit**</td>
@@ -122,7 +123,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>Good</td>
 <td>High Risk</td>
 <td>Variable</td>
-<td>**Batch Certificate Verification**</td>
+<td>**Batch Certificate Verification Upload**</td>
 </tr>
 <tr>
 <td>**12. Multi-Product RFQ Builder**</td>
@@ -141,12 +142,12 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**One-Tap Reorder Dashboard**</td>
 </tr>
 <tr>
-<td>**14. Commercial Fleet Focus**</td>
-<td>Partial</td>
+<td>**14. User Profile & Account**</td>
 <td>No</td>
-<td>Directory</td>
-<td>No</td>
-<td>**Dedicated Fleet/Industrial Tier**</td>
+<td>Basic</td>
+<td>Directory Profile</td>
+<td>Consumer Account</td>
+<td>**Verified Buyer & Seller Profile (`/profile`)**</td>
 </tr>
 <tr>
 <td>**15. WhatsApp Deep Integration**</td>
@@ -157,12 +158,12 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Pre-filled Instant WhatsApp**</td>
 </tr>
 <tr>
-<td>**16. Sub-Second AI Response**</td>
+<td>**16. Global Mobile Footer**</td>
 <td>No</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-<td>**Groq Llama-3 Sub-Second**</td>
+<td>Basic Links</td>
+<td>App Links</td>
+<td>Standard Footer</td>
+<td>**Omnichannel Responsive Footer (`Footer.tsx`)**</td>
 </tr>
 <tr>
 <td>**17. Zero App-Store Download**</td>
@@ -200,7 +201,111 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 
 ---
 
-## 3. Prioritized Feature List (P0 / P1 / P2 Matrix)
+## 3. Mobile App Wireframes (New Portals & Dashboard Included)
+
+### Wireframe 1: User Login & Role Selection (`/login`)
+
+```
+┌────────────────────────────────────────────────────────┐
+│ ← Back to Catalog                  💧 Lubeswala Sign In│
+├────────────────────────────────────────────────────────┤
+│ ACCOUNT ROLE SELECTOR:                                 │
+│ [  👤 Buyer / Workshop  ]  [  🏢 Merchant Seller  ]    │
+├────────────────────────────────────────────────────────┤
+│ LOGIN METHOD:                                          │
+│ (•) Mobile Phone OTP     ( ) GST Registered Email     │
+│                                                        │
+│ Mobile Phone Number *                                  │
+│ [ +91 | 9876543210                                   ] │
+│                                                        │
+│ [ 🚀 GET OTP VERIFICATION CODE                       ] │
+├────────────────────────────────────────────────────────┤
+│ 🛡️ Secure GST Authenticated Account Access             │
+└────────────────────────────────────────────────────────┘
+```
+
+### Wireframe 2: Buyer & User Profile Dashboard (`/profile`)
+
+```
+┌────────────────────────────────────────────────────────┐
+│ ← Back to Catalog              👤 User Account Profile │
+├────────────────────────────────────────────────────────┤
+│ USER HEADER CARD:                                      │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │ (P) Priya Sharma               [ VERIFIED BUYER ]  │ │
+│ │ Apex Auto Tech & Fleet Pvt Ltd                     │ │
+│ └────────────────────────────────────────────────────┘ │
+├────────────────────────────────────────────────────────┤
+│ QUICK STATS:                                           │
+│ ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐ │
+│ │ 4 Orders     │ │ 2 Active RFQs│ │ 6 Nearby Depots  │ │
+│ └──────────────┘ └──────────────┘ └──────────────────┘ │
+├────────────────────────────────────────────────────────┤
+│ ACCOUNT & BUSINESS DETAILS:                            │
+│ • Company: Apex Auto Tech & Fleet Pvt Ltd              │
+│ • GSTIN: 27AAAAA0000A1Z5                               │
+│ • Email: procurement@apex.com | Phone: +91 98765 43210 │
+├────────────────────────────────────────────────────────┤
+│ PORTALS & SHORTCUTS:                                   │
+│ [ 📊 Distributor Vendor Upload Dashboard            → ]│
+│ [ 📄 Submit New B2B Bulk RFQ                        → ]│
+└────────────────────────────────────────────────────────┘
+```
+
+### Wireframe 3: Distributor Merchant Upload Dashboard (`/dashboard`)
+
+```
+┌────────────────────────────────────────────────────────┐
+│ ← Back to Catalog          🏢 Distributor Vendor Portal│
+├────────────────────────────────────────────────────────┤
+│ UPLOAD NEW PRODUCT / LIQUID FUEL BATCH:                │
+│ Product Title *  [ PetroBazaar Low Viscosity Fuel Oil] │
+│ Category         [ Industrial Fuel Oils (FO/LDO)   ▼ ] │
+│ Brand            [ PetroBazaar                       ] │
+│ Viscosity Grade *[ LVFO 80 cSt                       ] │
+│ Price (₹ INR) *  [ 54.20                             ] │
+│ Packaging Unit   [ Liter (Bulk Tanker)               ] │
+│ Stock Quantity   [ 40000                             ] │
+│                                                        │
+│ ATTACH BATCH QUALITY TEST REPORT:                      │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │ 📄 Drag & drop PDF certificate or click to browse  │ │
+│ │ [ Select Batch PDF Certificate ]                   │ │
+│ └────────────────────────────────────────────────────┘ │
+│                                                        │
+│ [ 🚀 PUBLISH PRODUCT LISTING TO PETROBAZAAR LIVE DB  ] │
+├────────────────────────────────────────────────────────┤
+│ ACTIVE DB LISTINGS (6 Items):                          │
+│ • Furnace Oil FO 180 (₹ 52.50/L) - Stock: 50,000L      │
+│ • Bitumen VG-30 (₹ 44.50/Kg) - Stock: 80,000Kg         │
+└────────────────────────────────────────────────────────┘
+```
+
+### Wireframe 4: Global Mobile & Desktop Footer (`Footer.tsx`)
+
+```
+┌────────────────────────────────────────────────────────┐
+│ 💧 Lubeswala.com — A PETRO BAZAAR PLATFORM             │
+│ India's premier digital mobile commerce ecosystem for   │
+│ liquid fuel oils, bitumen, and lubricants.             │
+│                                                        │
+│ QUICK LINKS:              PORTALS:                     │
+│ • Catalog Overview        • Buyer & Merchant Login     │
+│ • Search & Filters        • User Profile Dashboard     │
+│ • Depot Locator Map       • Distributor Upload Portal  │
+│ • B2B Bulk RFQ            • Help Center & Support      │
+│                                                        │
+│ PETROBAZAAR HQ:                                        │
+│ 📍 Nacharam Industrial Area, Hyderabad, TS 500001      │
+│ 📞 +91 93966 28880 | ✉️ srinivas@petrobazaar.com       │
+│                                                        │
+│ © 2026 Lubeswala.com & PetroBazaar. All Rights Reserved│
+└────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4. Prioritized Feature List (Updated P0 / P1 / P2 Matrix)
 
 <table header-row="true">
 <tr>
@@ -216,6 +321,20 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>`/cart`, `/checkout`, `/request-quote`</td>
 <td>Captures both retail cash buyers and enterprise volume PO buyers.</td>
 <td>Zustand Store + Supabase `quote_requests` & `orders` tables.</td>
+</tr>
+<tr>
+<td>**P0**</td>
+<td>Distributor Vendor Upload Dashboard</td>
+<td>`/dashboard`</td>
+<td>Enables oil refiners & dealers to publish inventory & batch test certificates.</td>
+<td>React Dashboard Form + Supabase DB `products` insertion & file attachment.</td>
+</tr>
+<tr>
+<td>**P0**</td>
+<td>User Login & Profile Account Center</td>
+<td>`/login`, `/profile`</td>
+<td>Provides GST authenticated buyer/merchant profiles & saved addresses.</td>
+<td>Role selection + LocalStorage / Supabase auth persistence.</td>
 </tr>
 <tr>
 <td>**P0**</td>
@@ -240,10 +359,10 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 </tr>
 <tr>
 <td>**P1**</td>
-<td>Technical Specs Accordion Sheet</td>
-<td>`/product/[id]`</td>
-<td>Establishes enterprise credibility against counterfeit oils.</td>
-<td>Collapsible UI parsing JSONB `spec_sheet` parameter.</td>
+<td>Global Omnichannel Footer Component</td>
+<td>`Footer.tsx`</td>
+<td>Provides instant site navigation, HQ contact, and portal links.</td>
+<td>Responsive React Footer component integrated in RootLayout.</td>
 </tr>
 <tr>
 <td>**P1**</td>
