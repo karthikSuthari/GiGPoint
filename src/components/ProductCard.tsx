@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { useCartStore } from '@/store/useCartStore';
-import { ShoppingCart, FileText, Check, ChevronRight, Droplet } from 'lucide-react';
+import { ShoppingCart, FileText, Check, ChevronRight, Droplet, Layers } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -13,11 +13,14 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const addToCart = useCartStore((state) => state.addToCart);
   const addToQuote = useCartStore((state) => state.addToQuote);
+  const toggleCompare = useCartStore((state) => state.toggleCompare);
+  const compareItems = useCartStore((state) => state.compareItems);
+
+  const isComparing = compareItems.some((p) => p.id === product.id);
+
   const [addedCart, setAddedCart] = useState(false);
   const [addedQuote, setAddedQuote] = useState(false);
   const [imgError, setImgError] = useState(false);
-
-  const fallbackImage = 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80';
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -35,17 +38,22 @@ export default function ProductCard({ product }: ProductCardProps) {
     setTimeout(() => setAddedQuote(false), 1800);
   };
 
+  const handleToggleCompare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleCompare(product);
+  };
+
   return (
-    <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-slate-200 overflow-hidden flex flex-col group">
+    <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-slate-200 overflow-hidden flex flex-col group relative">
       {/* Product Image & Badges */}
       <Link href={`/product/${product.id}`} className="relative block h-44 overflow-hidden bg-slate-100">
-        {/* eslint-disable-next-html-element-suppression */}
         {!imgError ? (
           <img
             src={product.image_url}
             alt={product.name}
             onError={() => setImgError(true)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#0A4D8C] to-slate-900 flex flex-col items-center justify-center text-white p-4 text-center">
@@ -62,6 +70,20 @@ export default function ProductCard({ product }: ProductCardProps) {
             Grade: {product.grade}
           </span>
         </div>
+
+        {/* Quick Compare Floating Button */}
+        <button
+          onClick={handleToggleCompare}
+          className={`absolute top-2 right-2 z-20 px-2 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-md transition-all ${
+            isComparing
+              ? 'bg-[#F5A623] text-slate-950 ring-2 ring-amber-300'
+              : 'bg-slate-900/80 hover:bg-slate-900 text-white backdrop-blur-sm'
+          }`}
+          title={isComparing ? 'Remove from comparison' : 'Add to compare'}
+        >
+          <Layers className="w-3 h-3" />
+          <span>{isComparing ? 'Comparing' : '+ Compare'}</span>
+        </button>
 
         {product.is_bulk_available && (
           <span className="absolute bottom-2 right-2 bg-emerald-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow z-10">
@@ -141,12 +163,24 @@ export default function ProductCard({ product }: ProductCardProps) {
             </button>
           </div>
 
-          <Link
-            href={`/product/${product.id}`}
-            className="w-full mt-2 inline-flex items-center justify-center text-[11px] font-semibold text-slate-500 hover:text-[#0A4D8C] transition-colors py-0.5"
-          >
-            View Technical Specs <ChevronRight className="w-3 h-3 ml-0.5" />
-          </Link>
+          <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-slate-100 text-[11px]">
+            <button
+              onClick={handleToggleCompare}
+              className={`font-bold inline-flex items-center gap-1 transition-colors ${
+                isComparing ? 'text-amber-600' : 'text-slate-500 hover:text-slate-900'
+              }`}
+            >
+              <Layers className="w-3 h-3" />
+              <span>{isComparing ? '✓ In Compare' : '+ Compare Specs'}</span>
+            </button>
+
+            <Link
+              href={`/product/${product.id}`}
+              className="font-semibold text-slate-500 hover:text-[#0A4D8C] transition-colors inline-flex items-center"
+            >
+              View Specs <ChevronRight className="w-3 h-3 ml-0.5" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>

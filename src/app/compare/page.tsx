@@ -21,12 +21,20 @@ import { useCartStore } from '@/store/useCartStore';
 export default function ProductComparePage() {
   const addToCart = useCartStore((state) => state.addToCart);
   const addToQuote = useCartStore((state) => state.addToQuote);
+  const compareItems = useCartStore((state) => state.compareItems);
+  const removeFromCompare = useCartStore((state) => state.removeFromCompare);
 
-  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([
-    INITIAL_PRODUCTS[0]?.id || '',
-    INITIAL_PRODUCTS[6]?.id || '',
-    INITIAL_PRODUCTS[10]?.id || ''
-  ]);
+  const initialIds = compareItems.length > 0
+    ? compareItems.map((p) => p.id)
+    : [INITIAL_PRODUCTS[0]?.id || '', INITIAL_PRODUCTS[3]?.id || '', INITIAL_PRODUCTS[8]?.id || ''];
+
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>(initialIds);
+
+  React.useEffect(() => {
+    if (compareItems.length > 0) {
+      setSelectedProductIds(compareItems.map((p) => p.id));
+    }
+  }, [compareItems]);
 
   const selectedProducts = selectedProductIds
     .map((id) => INITIAL_PRODUCTS.find((p) => p.id === id))
@@ -39,6 +47,10 @@ export default function ProductComparePage() {
   };
 
   const handleRemoveProduct = (index: number) => {
+    const targetId = selectedProductIds[index];
+    if (targetId) {
+      removeFromCompare(targetId);
+    }
     const updated = selectedProductIds.filter((_, i) => i !== index);
     setSelectedProductIds(updated);
   };

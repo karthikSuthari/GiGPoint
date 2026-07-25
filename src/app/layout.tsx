@@ -4,6 +4,7 @@ import CrudeTicker from '@/components/CrudeTicker';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AIChatBot from '@/components/AIChatBot';
+import CompareBar from '@/components/CompareBar';
 
 export const metadata: Metadata = {
   title: 'Lubeswala.com — PetroBazaar Mobile Commerce Platform',
@@ -28,6 +29,9 @@ export default function RootLayout({
           {children}
         </main>
         
+        {/* Persistent Floating Product Specification Compare Bar */}
+        <CompareBar />
+
         {/* Floating Groq Llama-3 Database-Connected AI Chatbot */}
         <AIChatBot />
 

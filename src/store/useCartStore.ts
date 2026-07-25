@@ -6,6 +6,8 @@ interface CartStore {
   quoteItems: QuoteItem[];
   savedQuotes: QuoteRequest[];
   savedOrders: Order[];
+  compareItems: Product[];
+  
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateCartQuantity: (productId: string, quantity: number) => void;
@@ -18,6 +20,11 @@ interface CartStore {
   
   addQuoteRequest: (quote: QuoteRequest) => void;
   addOrder: (order: Order) => void;
+
+  addToCompare: (product: Product) => void;
+  removeFromCompare: (productId: string) => void;
+  toggleCompare: (product: Product) => void;
+  clearCompare: () => void;
 }
 
 export const useCartStore = create<CartStore>((set) => ({
@@ -25,6 +32,7 @@ export const useCartStore = create<CartStore>((set) => ({
   quoteItems: [],
   savedQuotes: [],
   savedOrders: [],
+  compareItems: [],
 
   addToCart: (product, quantity = 1) =>
     set((state) => {
@@ -97,4 +105,34 @@ export const useCartStore = create<CartStore>((set) => ({
     set((state) => ({
       savedOrders: [order, ...state.savedOrders],
     })),
+
+  addToCompare: (product) =>
+    set((state) => {
+      if (state.compareItems.some((p) => p.id === product.id)) return state;
+      if (state.compareItems.length >= 4) {
+        alert('You can compare up to 4 products at a time.');
+        return state;
+      }
+      return { compareItems: [...state.compareItems, product] };
+    }),
+
+  removeFromCompare: (productId) =>
+    set((state) => ({
+      compareItems: state.compareItems.filter((p) => p.id !== productId),
+    })),
+
+  toggleCompare: (product) =>
+    set((state) => {
+      const exists = state.compareItems.some((p) => p.id === product.id);
+      if (exists) {
+        return { compareItems: state.compareItems.filter((p) => p.id !== product.id) };
+      }
+      if (state.compareItems.length >= 4) {
+        alert('You can compare up to 4 products at a time.');
+        return state;
+      }
+      return { compareItems: [...state.compareItems, product] };
+    }),
+
+  clearCompare: () => set({ compareItems: [] }),
 }));

@@ -14,7 +14,8 @@ import {
   Truck, 
   ChevronDown, 
   ChevronUp,
-  Droplet
+  Droplet,
+  Layers
 } from 'lucide-react';
 
 export default function ProductDetailPage() {
@@ -25,6 +26,8 @@ export default function ProductDetailPage() {
   const product = INITIAL_PRODUCTS.find((p) => p.id === productId) || INITIAL_PRODUCTS[0];
   const addToCart = useCartStore((state) => state.addToCart);
   const addToQuote = useCartStore((state) => state.addToQuote);
+  const toggleCompare = useCartStore((state) => state.toggleCompare);
+  const compareItems = useCartStore((state) => state.compareItems);
 
   const [quantity, setQuantity] = useState(1);
   const [addedCart, setAddedCart] = useState(false);
@@ -147,33 +150,45 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="space-y-3 pt-4 border-t border-slate-100">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button
-                onClick={handleBuyNow}
-                className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold shadow-md transition-all ${
-                  addedCart
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-[#0A4D8C] hover:bg-[#083C6E] text-white active:scale-95'
-                }`}
-              >
-                {addedCart ? <Check className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}
-                Buy Now (Retail)
-              </button>
+            {/* Action Buttons */}
+            <div className="space-y-3 pt-4 border-t border-slate-100">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button
+                  onClick={handleBuyNow}
+                  className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold shadow-md transition-all ${
+                    addedCart
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-[#0A4D8C] hover:bg-[#083C6E] text-white active:scale-95'
+                  }`}
+                >
+                  {addedCart ? <Check className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}
+                  Buy Now
+                </button>
 
-              <button
-                onClick={handleRequestQuote}
-                className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold border transition-all ${
-                  addedQuote
-                    ? 'bg-amber-100 text-amber-900 border-amber-300'
-                    : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300 active:scale-95'
-                }`}
-              >
-                {addedQuote ? <Check className="w-5 h-5" /> : <FileText className="w-5 h-5 text-amber-700" />}
-                Request Bulk RFQ
-              </button>
-            </div>
+                <button
+                  onClick={handleRequestQuote}
+                  className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold border transition-all ${
+                    addedQuote
+                      ? 'bg-amber-100 text-amber-900 border-amber-300'
+                      : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300 active:scale-95'
+                  }`}
+                >
+                  {addedQuote ? <Check className="w-5 h-5" /> : <FileText className="w-5 h-5 text-amber-700" />}
+                  Request RFQ
+                </button>
+
+                <button
+                  onClick={() => toggleCompare(product)}
+                  className={`flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold border transition-all ${
+                    compareItems.some((p) => p.id === product.id)
+                      ? 'bg-amber-400 text-slate-950 border-amber-400 font-extrabold'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200 active:scale-95'
+                  }`}
+                >
+                  <Layers className="w-5 h-5 text-[#0A4D8C]" />
+                  {compareItems.some((p) => p.id === product.id) ? 'Comparing' : 'Compare Specs'}
+                </button>
+              </div>
 
             <p className="text-[11px] text-center text-slate-500">
               ⚡ Need 50+ buckets or drum tankers? Request a quote for corporate GST pricing.
