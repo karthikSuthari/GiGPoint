@@ -19,15 +19,20 @@ export const INITIAL_PRODUCTS: Product[] = [
     "name": "HP Transformer Oil - 10 ltrs",
     "brand": "Lubeswala",
     "grade": "Industrial Lubricant",
-    "description": "Unlock the power of reliability and safety for your electrical systems with HP Transformer Oil—a premium-grade insulating oil engineered to meet and exceed the latest IS:335-2018 TYPE II UNINHIBITED and IS:335:1993 (Reaffirmed 2005) standards. Trusted by professionals and certified by prestigious institutes like CPRI and ERDA, HP Transformer Oil is your best choice for ensuring transformer longevity and consistent performance . Key Features and Benefits Exceptional Dielectric Strength: Boasting a high breakdown voltage of 72kV (rms), HP Transformer Oil delivers robust electrical insulation for critical transformer components, minimizing the risk of faults and failures . Superb Oxidation Stability: Formulated to resist oxidation, this oil maintains its properties over time—reducing sludge formation and ensuring longer product and equipment life . Thermal Efficiency: Its balanced kinematic viscosity ensures rapid and efficient cooling of transformer windings, preventing overheating and optimizing performance even under demanding conditions . Impeccable Purity and Clarity: Transparent and free from suspended matter, HP Transformer Oil undergoes rigorous purification so you get clear oil that’s safe and reliable . Human Safe and Eco-friendly: Completely free from carcinogenic PCBs (Polychlorinated Biphenyls) and PAH (Poly Aromatic Hydrocarbons), making it safer for operators and the environment . Excellent Ageing Properties: With minimal sludge and total acidity even after prolonged use, your transformer oil will last longer, reducing downtime and total cost of ownership . Non-Corrosive: Ensures maximum protection for metals and transformer components, thus extending asset lifespan . Certified Quality: Approved by Central Power Research Institute (CPRI), Bangalore, and Electrical Research and Development Association (ERDA), Vadodara, for ultimate peace of mind . Ideal Applications Power and distribution transformers Switchgears High-voltage circuit breakers requiring high-grade insulating fluid . Physico-Chemical Highlights Property Value Appearance Clear and transparent Breakdown voltage 72kV (rms) Kinematic Viscosity 16.46 cSt @ 27°C, 11 cSt @ 40°C Flash Point 172°C Pour Point -18°C Neutralization Value Nil Corrosive Sulphur Non-corrosive Water Content 50 mg/kg (ppm) Specific Resistance 11,300x10¹² ohm-cm @ 27°C Give your electrical assets the protection and efficiency they deserve—choose HP Transformer Oil for advanced, eco-friendly, and worry-free transformer care . Boost your system’s uptime and operational safety with HP Transformer Oil—Engineered for a safer tomorrow!",
+    "description": "Premium-grade insulating transformer oil engineered to IS:335-2018 TYPE II UNINHIBITED standards. CPRI & ERDA certified for high breakdown voltage (72kV) and thermal cooling.\n\nKey Highlights:\n• High Dielectric Strength: 72kV (rms) breakdown voltage for robust insulation\n• Oxidation Stability: Reduces sludge formation for longer equipment lifespan\n• Thermal Efficiency: Rapid cooling of transformer windings under high loads\n• Pure & Eco-Friendly: Free from carcinogenic PCBs & PAHs\n• Certified Quality: Approved by CPRI (Bangalore) & ERDA (Vadodara)\n\nApplications:\n• Power & Distribution Transformers\n• Switchgears & High-Voltage Circuit Breakers",
     "price_inr": 2360,
     "unit": "10 Litres Container",
     "stock_qty": 150,
     "image_url": "https://cdn.shopify.com/s/files/1/0795/3560/3991/files/transformeroil10ltrs.png?v=1754127773",
     "spec_sheet": {
-      "Manufacturer": "Lubeswala",
+      "Manufacturer": "HP Lubricants / Lubeswala",
       "Volume / Packaging": "10 Litres Container",
-      "Product SKU": "hp-transformer-oil-10-ltrs",
+      "Standard Compliance": "IS:335-2018 TYPE II UNINHIBITED",
+      "Breakdown Voltage": "72 kV (rms)",
+      "Kinematic Viscosity": "16.46 cSt @ 27°C / 11 cSt @ 40°C",
+      "Flash Point": "172°C",
+      "Pour Point": "-18°C",
+      "Certifications": "CPRI (Bangalore) & ERDA (Vadodara)",
       "Authenticity": "100% Sealed Factory Pack"
     },
     "is_bulk_available": true

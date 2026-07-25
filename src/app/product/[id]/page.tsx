@@ -14,9 +14,87 @@ import {
   Truck, 
   ChevronDown, 
   ChevronUp,
+  CheckCircle2,
+  Zap,
+  Sparkles,
   Droplet,
   Layers
 } from 'lucide-react';
+
+function FormattedProductDescription({ text }: { text: string }) {
+  // Clean up HTML entities & raw text
+  const cleanText = text
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"');
+
+  // Check if text has newline bullet points
+  const lines = cleanText.split('\n').map((l) => l.trim()).filter(Boolean);
+  
+  // Extract summary (intro) vs bullets
+  let intro = lines[0] || '';
+  if (intro.length > 250) {
+    const periodIdx = intro.indexOf('.', 100);
+    if (periodIdx !== -1) {
+      intro = intro.substring(0, periodIdx + 1);
+    }
+  }
+
+  const bulletItems: string[] = [];
+  lines.forEach((line) => {
+    if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+      bulletItems.push(line.replace(/^[•\-\*]\s*/, ''));
+    }
+  });
+
+  // If no newline bullets found, extract sentences or key phrases
+  if (bulletItems.length === 0) {
+    // Check for inline bullet symbols or phrase separators
+    if (cleanText.includes('•')) {
+      const parts = cleanText.split('•').map(p => p.trim()).filter(p => p.length > 5);
+      bulletItems.push(...parts.slice(0, 6));
+    } else {
+      // Split into key feature sentences
+      const sentences = cleanText
+        .split(/(?<=[.!?])\s+/)
+        .map(s => s.trim())
+        .filter(s => s.length > 20 && !s.includes('Unlock the power') && !s.includes('Boost your system'));
+      
+      bulletItems.push(...sentences.slice(1, 5));
+    }
+  }
+
+  return (
+    <div className="mt-4 space-y-3">
+      {/* Short Lead Summary */}
+      <div className="p-3.5 bg-gradient-to-r from-slate-50 to-blue-50/40 border-l-4 border-[#0A4D8C] rounded-r-2xl text-xs md:text-sm font-medium text-slate-800 leading-relaxed shadow-xs">
+        <span className="font-bold text-[#0A4D8C]">Overview: </span>
+        {intro}
+      </div>
+
+      {/* Sharp Key Bullet Highlights */}
+      {bulletItems.length > 0 && (
+        <div className="space-y-2 pt-1">
+          <span className="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+            <Zap className="w-4 h-4 text-[#F5A623]" /> Key Performance Highlights:
+          </span>
+          <div className="grid grid-cols-1 gap-2">
+            {bulletItems.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-start gap-2.5 bg-emerald-50/60 p-2.5 rounded-xl border border-emerald-100/90 text-xs font-semibold text-emerald-950 shadow-2xs"
+              >
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span className="leading-snug">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -122,9 +200,7 @@ export default function ProductDetailPage() {
               <span className="text-xs text-slate-500 font-medium">/ {product.unit}</span>
             </div>
 
-            <p className="mt-4 text-sm text-slate-600 leading-relaxed">
-              {product.description}
-            </p>
+            <FormattedProductDescription text={product.description} />
 
             {/* Quantity Stepper */}
             <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-4">
