@@ -370,7 +370,7 @@ export default function VendorDealerDashboardPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Sale Quantity (Units/Drums) *</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Sale Quantity (Liters / Drums / Containers) *</label>
                   <input
                     type="number"
                     min={1}
