@@ -15,11 +15,29 @@ import {
   Search
 } from 'lucide-react';
 
+import { supabase } from '@/lib/supabase';
+import { Product } from '@/types';
+
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
 
-  const filteredProducts = INITIAL_PRODUCTS.filter((product) => {
+  React.useEffect(() => {
+    async function loadDbProducts() {
+      try {
+        const { data, error } = await supabase.from('products').select('*');
+        if (data && data.length > 0 && !error) {
+          setProducts(data as Product[]);
+        }
+      } catch (err) {
+        console.warn('Supabase DB fetch fallback:', err);
+      }
+    }
+    loadDbProducts();
+  }, []);
+
+  const filteredProducts = products.filter((product) => {
     const matchesCategory =
       selectedCategory === 'all' || product.category_slug === selectedCategory;
     const matchesSearch =
