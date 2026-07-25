@@ -19,10 +19,13 @@ Many petroleum and lubricant customers prefer mobile devices for browsing and pu
 
 ### Our Solution
 A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBazaar platform) unifying:
+- **Real-Time Live Crude Price Ticker (`CrudeTicker.tsx`):** Header strip streaming Brent Crude ($78.45/bbl), WTI ($74.20/bbl), Furnace Oil (FO 180), LDO, and Bitumen VG-30 benchmark price telemetry.
+- **GPS Tanker Live Location Tracker (`/tracking`):** Moving GPS map telemetry for liquid fuel bowser trucks (`TS-08-PETRO-4920`) with seal integrity validation.
 - **Dual Commerce Engine:** Instant retail checkout for small buyers & multi-item B2B RFQ quotation engine for commercial buyers.
 - **Groq Llama-3 Database AI:** Sub-second natural language AI recommendation engine and database-connected chatbot widget.
 - **Depot & Dealer Locator Map (`/dealers`):** Hyper-local GPS network map for 45-minute express workshop pickup.
 - **Distributor Vendor Portal (`/dashboard`):** Self-serve seller dashboard for distributors to upload product lines & batch test certificates.
+- **25 SKU Catalog Depth:** Complete SKU depth across 1L, 3.5L, 4L, 5L, 15L, 18kg, 200L drums, and 10,000L bulk tankers.
 
 ---
 
@@ -38,7 +41,31 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Lubeswala (Our Mobile PWA)**</td>
 </tr>
 <tr>
-<td>**1. Mobile Navigation UX**</td>
+<td>**1. Live Crude Price Ticker**</td>
+<td>No</td>
+<td>Static Text</td>
+<td>No</td>
+<td>No</td>
+<td>**Streaming Market Ticker (`CrudeTicker.tsx`)**</td>
+</tr>
+<tr>
+<td>**2. GPS Tanker Live Location**</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Standard Courier</td>
+<td>**Live Moving GPS Tanker (`/tracking`)**</td>
+</tr>
+<tr>
+<td>**3. SKU Catalog Depth**</td>
+<td>Limited Shop Stock</td>
+<td>Basic SKUs</td>
+<td>Directory List</td>
+<td>Consumer SKUs</td>
+<td>**25 SKUs (1L to 10,000L Tankers)**</td>
+</tr>
+<tr>
+<td>**4. Mobile Navigation UX**</td>
 <td>None</td>
 <td>Desktop Heavy</td>
 <td>Cluttered App</td>
@@ -46,7 +73,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Mobile-First PWA & Tab Bar**</td>
 </tr>
 <tr>
-<td>**2. B2B RFQ Workflow**</td>
+<td>**5. B2B RFQ Workflow**</td>
 <td>Manual Call</td>
 <td>No</td>
 <td>Unstructured Chat</td>
@@ -54,7 +81,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Dedicated RFQ Engine (`/request-quote`)**</td>
 </tr>
 <tr>
-<td>**3. AI Grade Guidance**</td>
+<td>**6. AI Grade Guidance**</td>
 <td>Verbal (Variable)</td>
 <td>No</td>
 <td>No</td>
@@ -62,7 +89,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Groq Llama-3 AI Engine**</td>
 </tr>
 <tr>
-<td>**4. Database AI Chatbot**</td>
+<td>**7. Database AI Chatbot**</td>
 <td>No</td>
 <td>No</td>
 <td>No</td>
@@ -70,7 +97,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Live DB Connected Chatbot (`AIChatBot.tsx`)**</td>
 </tr>
 <tr>
-<td>**5. Technical Specs Sheet**</td>
+<td>**8. Technical Specs Sheet**</td>
 <td>No</td>
 <td>PDF static</td>
 <td>No</td>
@@ -78,7 +105,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Interactive JSONB Accordion**</td>
 </tr>
 <tr>
-<td>**6. Dual Buy/Quote Flow**</td>
+<td>**9. Dual Buy/Quote Flow**</td>
 <td>No</td>
 <td>No</td>
 <td>No</td>
@@ -86,7 +113,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Integrated Dual Engine**</td>
 </tr>
 <tr>
-<td>**7. Depot Locator Map**</td>
+<td>**10. Depot Locator Map**</td>
 <td>Local Store Only</td>
 <td>Static List</td>
 <td>Directory List</td>
@@ -94,7 +121,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Interactive GPS Network Map (`/dealers`)**</td>
 </tr>
 <tr>
-<td>**8. Distributor Upload Portal**</td>
+<td>**11. Distributor Upload Portal**</td>
 <td>No</td>
 <td>No</td>
 <td>Directory Form</td>
@@ -102,7 +129,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Dedicated Vendor Dashboard (`/dashboard`)**</td>
 </tr>
 <tr>
-<td>**9. GST Tax Invoice Audit**</td>
+<td>**12. GST Tax Invoice Audit**</td>
 <td>Manual Paper</td>
 <td>Email PDF</td>
 <td>Seller Dependent</td>
@@ -110,7 +137,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Built-in B2B GST Flow**</td>
 </tr>
 <tr>
-<td>**10. Real-Time Order Tracking**</td>
+<td>**13. Real-Time Order Tracking**</td>
 <td>Manual Call</td>
 <td>No</td>
 <td>No</td>
@@ -118,7 +145,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Integrated Dispatch Tracker (`/orders`)**</td>
 </tr>
 <tr>
-<td>**11. Counterfeit Protection**</td>
+<td>**14. Counterfeit Protection**</td>
 <td>22% Adulteration</td>
 <td>Good</td>
 <td>High Risk</td>
@@ -126,7 +153,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Batch Certificate Verification Upload**</td>
 </tr>
 <tr>
-<td>**12. Multi-Product RFQ Builder**</td>
+<td>**15. Multi-Product RFQ Builder**</td>
 <td>Paper List</td>
 <td>No</td>
 <td>No</td>
@@ -134,7 +161,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Multi-Item RFQ Cart**</td>
 </tr>
 <tr>
-<td>**13. Order History Reorder**</td>
+<td>**16. Order History Reorder**</td>
 <td>Phone Memory</td>
 <td>No</td>
 <td>No</td>
@@ -142,7 +169,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**One-Tap Reorder Dashboard**</td>
 </tr>
 <tr>
-<td>**14. User Profile & Account**</td>
+<td>**17. User Profile & Account**</td>
 <td>No</td>
 <td>Basic</td>
 <td>Directory Profile</td>
@@ -150,7 +177,7 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Verified Buyer & Seller Profile (`/profile`)**</td>
 </tr>
 <tr>
-<td>**15. WhatsApp Deep Integration**</td>
+<td>**18. WhatsApp Deep Integration**</td>
 <td>Personal Chat</td>
 <td>No</td>
 <td>Chat Bot</td>
@@ -158,36 +185,12 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>**Pre-filled Instant WhatsApp**</td>
 </tr>
 <tr>
-<td>**16. Global Mobile Footer**</td>
-<td>No</td>
-<td>Basic Links</td>
-<td>App Links</td>
-<td>Standard Footer</td>
-<td>**Omnichannel Responsive Footer (`Footer.tsx`)**</td>
-</tr>
-<tr>
-<td>**17. Zero App-Store Download**</td>
+<td>**19. Zero App-Store Download**</td>
 <td>N/A</td>
 <td>Website</td>
 <td>App Required</td>
 <td>App Required</td>
 <td>**PWA Instant Browser Load**</td>
-</tr>
-<tr>
-<td>**18. Industrial Fuel (Furnace)**</td>
-<td>Local Trader</td>
-<td>No</td>
-<td>Unverified Traders</td>
-<td>No</td>
-<td>**Bulk Tanker RFQ Integration**</td>
-</tr>
-<tr>
-<td>**19. Dynamic Search & Filters**</td>
-<td>No</td>
-<td>Basic</td>
-<td>Keyword Only</td>
-<td>Good</td>
-<td>**Debounced Grade & Brand Filter**</td>
 </tr>
 <tr>
 <td>**20. Help & Support Center**</td>
@@ -201,105 +204,42 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 
 ---
 
-## 3. Mobile App Wireframes (New Portals & Dashboard Included)
+## 3. Mobile App Wireframes (GPS Tanker Tracking & Market Ticker Included)
 
-### Wireframe 1: User Login & Role Selection (`/login`)
+### Wireframe 1: GPS Tanker Live Location Tracker Screen (`/tracking`)
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│ ← Back to Catalog                  💧 Lubeswala Sign In│
+│ ← Back to Orders       🚚 GPS Tanker Live Dispatch     │
 ├────────────────────────────────────────────────────────┤
-│ ACCOUNT ROLE SELECTOR:                                 │
-│ [  👤 Buyer / Workshop  ]  [  🏢 Merchant Seller  ]    │
+│ ORDER DETAILS:                                         │
+│ Order #ORD-928104 | Destination: Pune MIDC, Bhosari   │
+│ ETA Countdown: ⏱️ 34 MINUTES                          │
 ├────────────────────────────────────────────────────────┤
-│ LOGIN METHOD:                                          │
-│ (•) Mobile Phone OTP     ( ) GST Registered Email     │
-│                                                        │
-│ Mobile Phone Number *                                  │
-│ [ +91 | 9876543210                                   ] │
-│                                                        │
-│ [ 🚀 GET OTP VERIFICATION CODE                       ] │
+│ VISUAL GPS ROUTE MAP:                                  │
+│ [======================🚚 Tanker TS-08-4920=========>]│
+│ Progress: 62% along route                              │
+│ Origin: Hyderabad Central Depot -> Dest: Pune MIDC     │
 ├────────────────────────────────────────────────────────┤
-│ 🛡️ Secure GST Authenticated Account Access             │
+│ TANKER TELEMETRY & SECURITY:                           │
+│ • Live Speed: 48 km/h                                  │
+│ • Digital Seal Status: 🟢 SEAL INTACT (ISO Verified)   │
+│ • Cargo Temperature: 34°C (Normal Range)               │
+│ • Fuel Payload: 15,000 Liters Furnace Oil FO 180       │
+├────────────────────────────────────────────────────────┤
+│ DRIVER CONTACT & DIRECT ACTION:                        │
+│ 👤 Driver: Ramesh Singh (Verified Dispatch)            │
+│ [ 📞 CALL DRIVER RAMESH (+91 98765 12345)            ] │
 └────────────────────────────────────────────────────────┘
 ```
 
-### Wireframe 2: Buyer & User Profile Dashboard (`/profile`)
+### Wireframe 2: Real-Time Crude Market Ticker Strip (`CrudeTicker.tsx`)
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│ ← Back to Catalog              👤 User Account Profile │
-├────────────────────────────────────────────────────────┤
-│ USER HEADER CARD:                                      │
-│ ┌────────────────────────────────────────────────────┐ │
-│ │ (P) Priya Sharma               [ VERIFIED BUYER ]  │ │
-│ │ Apex Auto Tech & Fleet Pvt Ltd                     │ │
-│ └────────────────────────────────────────────────────┘ │
-├────────────────────────────────────────────────────────┤
-│ QUICK STATS:                                           │
-│ ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐ │
-│ │ 4 Orders     │ │ 2 Active RFQs│ │ 6 Nearby Depots  │ │
-│ └──────────────┘ └──────────────┘ └──────────────────┘ │
-├────────────────────────────────────────────────────────┤
-│ ACCOUNT & BUSINESS DETAILS:                            │
-│ • Company: Apex Auto Tech & Fleet Pvt Ltd              │
-│ • GSTIN: 27AAAAA0000A1Z5                               │
-│ • Email: procurement@apex.com | Phone: +91 98765 43210 │
-├────────────────────────────────────────────────────────┤
-│ PORTALS & SHORTCUTS:                                   │
-│ [ 📊 Distributor Vendor Upload Dashboard            → ]│
-│ [ 📄 Submit New B2B Bulk RFQ                        → ]│
-└────────────────────────────────────────────────────────┘
-```
-
-### Wireframe 3: Distributor Merchant Upload Dashboard (`/dashboard`)
-
-```
-┌────────────────────────────────────────────────────────┐
-│ ← Back to Catalog          🏢 Distributor Vendor Portal│
-├────────────────────────────────────────────────────────┤
-│ UPLOAD NEW PRODUCT / LIQUID FUEL BATCH:                │
-│ Product Title *  [ PetroBazaar Low Viscosity Fuel Oil] │
-│ Category         [ Industrial Fuel Oils (FO/LDO)   ▼ ] │
-│ Brand            [ PetroBazaar                       ] │
-│ Viscosity Grade *[ LVFO 80 cSt                       ] │
-│ Price (₹ INR) *  [ 54.20                             ] │
-│ Packaging Unit   [ Liter (Bulk Tanker)               ] │
-│ Stock Quantity   [ 40000                             ] │
-│                                                        │
-│ ATTACH BATCH QUALITY TEST REPORT:                      │
-│ ┌────────────────────────────────────────────────────┐ │
-│ │ 📄 Drag & drop PDF certificate or click to browse  │ │
-│ │ [ Select Batch PDF Certificate ]                   │ │
-│ └────────────────────────────────────────────────────┘ │
-│                                                        │
-│ [ 🚀 PUBLISH PRODUCT LISTING TO PETROBAZAAR LIVE DB  ] │
-├────────────────────────────────────────────────────────┤
-│ ACTIVE DB LISTINGS (6 Items):                          │
-│ • Furnace Oil FO 180 (₹ 52.50/L) - Stock: 50,000L      │
-│ • Bitumen VG-30 (₹ 44.50/Kg) - Stock: 80,000Kg         │
-└────────────────────────────────────────────────────────┘
-```
-
-### Wireframe 4: Global Mobile & Desktop Footer (`Footer.tsx`)
-
-```
-┌────────────────────────────────────────────────────────┐
-│ 💧 Lubeswala.com — A PETRO BAZAAR PLATFORM             │
-│ India's premier digital mobile commerce ecosystem for   │
-│ liquid fuel oils, bitumen, and lubricants.             │
-│                                                        │
-│ QUICK LINKS:              PORTALS:                     │
-│ • Catalog Overview        • Buyer & Merchant Login     │
-│ • Search & Filters        • User Profile Dashboard     │
-│ • Depot Locator Map       • Distributor Upload Portal  │
-│ • B2B Bulk RFQ            • Help Center & Support      │
-│                                                        │
-│ PETROBAZAAR HQ:                                        │
-│ 📍 Nacharam Industrial Area, Hyderabad, TS 500001      │
-│ 📞 +91 93966 28880 | ✉️ srinivas@petrobazaar.com       │
-│                                                        │
-│ © 2026 Lubeswala.com & PetroBazaar. All Rights Reserved│
+│ 📈 LIVE MARKET TICKER:                                 │
+│ BRENT: $78.45/bbl (+1.2% 🟢) | WTI: $74.20/bbl (+0.8%🟢)│
+│ FO 180: ₹52,500/KL (-0.5% 🔴)| LDO: ₹68,000/KL (+0.3% 🟢)│
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -314,6 +254,27 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>Route / File</td>
 <td>User Value & Impact</td>
 <td>Technical Implementation</td>
+</tr>
+<tr>
+<td>**P0**</td>
+<td>Real-time Live Crude Price Ticker</td>
+<td>`CrudeTicker.tsx`</td>
+<td>Streams live Brent crude & fuel oil market price benchmark telemetry.</td>
+<td>Auto-updating React Marquee Strip + Live commodity price feed.</td>
+</tr>
+<tr>
+<td>**P0**</td>
+<td>GPS Tanker Live Location Tracker</td>
+<td>`/tracking`, `GPSTankerTracker.tsx`</td>
+<td>Renders moving GPS fuel tanker location, speed, ETA, and seal status.</td>
+<td>Animated GPS route component + Driver direct phone contact.</td>
+</tr>
+<tr>
+<td>**P0**</td>
+<td>25 SKU Product Catalog Depth</td>
+<td>`src/lib/data.ts`</td>
+<td>Covers all packaging tiers from 1L bottles to 10,000L bulk tankers.</td>
+<td>Expanded dataset across Servo, HP, Total, Castrol, Mobil & PetroBazaar.</td>
 </tr>
 <tr>
 <td>**P0**</td>
@@ -370,12 +331,5 @@ A **Customer-Friendly Mobile Commerce PWA Application** for Lubeswala (a PetroBa
 <td>`/support`</td>
 <td>Reduces support overhead with FAQs, WhatsApp, and ticket forms.</td>
 <td>Support page with ticket reference generator and WhatsApp deep-link.</td>
-</tr>
-<tr>
-<td>**P2**</td>
-<td>Order & Quote Status Dashboards</td>
-<td>`/quotes`, `/orders`</td>
-<td>Provides real-time visibility from quote submission to dispatch.</td>
-<td>Status badge dashboard parsing Zustand / Supabase records.</td>
 </tr>
 </table>
