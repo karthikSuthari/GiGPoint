@@ -1,23 +1,148 @@
 import { Category, Product } from '@/types';
 
 export const INITIAL_CATEGORIES: Category[] = [
-  { id: 'cat-1', name: 'Engine Oil', slug: 'engine-oil', icon: 'Droplet' },
-  { id: 'cat-2', name: 'Brake Fluid', slug: 'brake-fluid', icon: 'Disc' },
-  { id: 'cat-3', name: 'Grease & Lubricants', slug: 'grease', icon: 'Wrench' },
-  { id: 'cat-4', name: 'Industrial Oil', slug: 'industrial-oil', icon: 'Factory' },
-  { id: 'cat-5', name: 'Coolant & Radiator', slug: 'coolant', icon: 'Thermometer' }
+  { id: 'cat-1', name: 'Industrial Fuel Oils (FO/LDO)', slug: 'industrial-fuel', icon: 'Factory' },
+  { id: 'cat-2', name: 'Engine & Diesel Oils', slug: 'engine-oil', icon: 'Droplet' },
+  { id: 'cat-3', name: 'Bitumen & Construction', slug: 'bitumen', icon: 'Layers' },
+  { id: 'cat-4', name: 'Pyrolysis & Bio-Fuels', slug: 'pyrolysis-bio', icon: 'Flame' },
+  { id: 'cat-5', name: 'Grease & Special Lubricants', slug: 'grease', icon: 'Wrench' },
+  { id: 'cat-6', name: 'Brake Fluids & Coolants', slug: 'coolant-brake', icon: 'Thermometer' }
 ];
 
 export const INITIAL_PRODUCTS: Product[] = [
   {
-    id: 'prod-1',
+    id: 'pb-fo-180',
     category_id: 'cat-1',
+    category_slug: 'industrial-fuel',
+    name: 'PetroBazaar Premium Furnace Oil (FO Grade 180)',
+    brand: 'PetroBazaar',
+    grade: 'FO 180 cSt',
+    description: 'High-calorific heavy liquid fuel derived from petroleum refining. Designed for industrial furnaces, steel re-heating, power boilers, and ceramic kilns.',
+    price_inr: 52.50,
+    unit: 'Liter (Bulk Tanker)',
+    stock_qty: 50000,
+    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2023/12/FO-LDO-watermarked.png',
+    spec_sheet: {
+      'Gross Calorific Value': '10,200 kcal/kg',
+      'Kinematic Viscosity @ 50°C': '180 cSt',
+      'Flash Point (Pensky-Martens)': '66°C',
+      'Sulfur Content': '< 3.5% Max',
+      'Water Content': '< 1.0% Max',
+      'Minimum Delivery Order': '10,000 Liters (Tanker Dispatch)'
+    },
+    is_bulk_available: true
+  },
+  {
+    id: 'pb-ldo-01',
+    category_id: 'cat-1',
+    category_slug: 'industrial-fuel',
+    name: 'Light Diesel Oil (LDO) Industrial Grade',
+    brand: 'PetroBazaar',
+    grade: 'Class Class-C LDO',
+    description: 'Medium-distillate fuel oil blended for stationary diesel engines, pumpsets, low-speed diesel generators, and industrial heating applications.',
+    price_inr: 68.00,
+    unit: 'Liter (Bulk Tanker)',
+    stock_qty: 35000,
+    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/LDO.png',
+    spec_sheet: {
+      'Gross Calorific Value': '10,300 kcal/kg',
+      'Kinematic Viscosity @ 40°C': '2.5 - 15.7 cSt',
+      'Flash Point': '66°C',
+      'Pour Point': '12°C Max',
+      'Density @ 15°C': '0.850 - 0.890 g/cm³'
+    },
+    is_bulk_available: true
+  },
+  {
+    id: 'pb-lvfo-01',
+    category_id: 'cat-1',
+    category_slug: 'industrial-fuel',
+    name: 'LVFO – Low Viscosity Fuel Oil',
+    brand: 'PetroBazaar',
+    grade: 'LVFO 80 cSt',
+    description: 'Specially engineered low-viscosity liquid fuel offering easy pumpability and smooth atomization without requiring heavy pre-heating.',
+    price_inr: 54.20,
+    unit: 'Liter (Bulk Tanker)',
+    stock_qty: 40000,
+    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/LVFO-Watermarked.png',
+    spec_sheet: {
+      'Gross Calorific Value': '10,150 kcal/kg',
+      'Kinematic Viscosity @ 50°C': '80 cSt',
+      'Flash Point': '60°C',
+      'Ash Content': '< 0.1%'
+    },
+    is_bulk_available: true
+  },
+  {
+    id: 'pb-bitumen-vg30',
+    category_id: 'cat-3',
+    category_slug: 'bitumen',
+    name: 'Bitumen VG-30 Paving Grade (Bulk Tanker)',
+    brand: 'PetroBazaar',
+    grade: 'VG-30 (IS 73:2013)',
+    description: 'Standard viscosity-graded paving bitumen widely used for highway construction, road surfacing, and heavy traffic corridor asphalt paving.',
+    price_inr: 44.50,
+    unit: 'Kg (Bulk Tanker)',
+    stock_qty: 80000,
+    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2023/12/Bitumen-Bulk.png',
+    spec_sheet: {
+      'Absolute Viscosity @ 60°C': '2400 - 3600 Poise',
+      'Kinematic Viscosity @ 135°C': '350 cSt Min',
+      'Penetration @ 25°C': '45 - 70 (0.1 mm)',
+      'Softening Point': '47°C Min',
+      'Standard Specification': 'IS 73:2013 Compliance'
+    },
+    is_bulk_available: true
+  },
+  {
+    id: 'pb-tyre-pyro',
+    category_id: 'cat-4',
+    category_slug: 'pyrolysis-bio',
+    name: 'Tyre Pyrolysis Oil (TPO) Industrial Grade',
+    brand: 'PetroBazaar Bio',
+    grade: 'TPO Fuel',
+    description: 'Cost-effective alternative fuel oil produced from waste tyre pyrolysis recycling. Ideal for boilers, furnaces, lime kilns, and glass factories.',
+    price_inr: 47.80,
+    unit: 'Liter (Bulk Tanker)',
+    stock_qty: 25000,
+    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/Tyre-Pyrolysis-Oil-watermarked.png',
+    spec_sheet: {
+      'Gross Calorific Value': '10,400 kcal/kg',
+      'Flash Point': '45°C - 55°C',
+      'Density @ 15°C': '0.910 - 0.940 g/cm³',
+      'Sulfur Content': '< 1.2%'
+    },
+    is_bulk_available: true
+  },
+  {
+    id: 'pb-plastic-pyro',
+    category_id: 'cat-4',
+    category_slug: 'pyrolysis-bio',
+    name: 'Plastic Pyrolysis Oil (PPO) Clean Grade',
+    brand: 'PetroBazaar Bio',
+    grade: 'PPO Fuel',
+    description: 'Eco-friendly recycled liquid fuel synthesized from mixed waste plastic processing, delivering high heat release and low carbon residue.',
+    price_inr: 49.00,
+    unit: 'Liter (Bulk Tanker)',
+    stock_qty: 20000,
+    image_url: 'https://test.petrobazaar.com/wp-content/uploads/2024/01/Plastic-Pyrolysis-Oil-watermarked.png',
+    spec_sheet: {
+      'Gross Calorific Value': '10,500 kcal/kg',
+      'Flash Point': '42°C',
+      'Density @ 15°C': '0.820 - 0.860 g/cm³',
+      'Ash Content': '< 0.05%'
+    },
+    is_bulk_available: true
+  },
+  {
+    id: 'prod-laal-ghoda',
+    category_id: 'cat-2',
     category_slug: 'engine-oil',
-    name: 'HP Laal Ghoda 20W-40 Diesel Engine Oil',
+    name: 'HP Laal Ghoda 20W-40 Heavy Diesel Engine Oil',
     brand: 'HP Lubes',
     grade: '20W-40',
-    description: 'Heavy-duty diesel engine oil specially formulated for commercial trucks, tractors, and heavy machinery operating under severe temperature and load conditions.',
-    price_inr: 3450,
+    description: 'Heavy-duty diesel engine oil specially formulated for commercial trucks, tractors, and agricultural machinery operating under severe loads.',
+    price_inr: 3450.00,
     unit: '15 Liter Bucket',
     stock_qty: 120,
     image_url: 'https://images.unsplash.com/photo-1615906655593-ad0386982a0f?auto=format&fit=crop&w=600&q=80',
@@ -25,20 +150,19 @@ export const INITIAL_PRODUCTS: Product[] = [
       'API Standard': 'CF-4 / SG',
       'Kinematic Viscosity @ 100°C': '14.5 cSt',
       'Flash Point': '230°C',
-      'Pour Point': '-21°C',
-      'Recommended Change Interval': '10,000 KM'
+      'Pour Point': '-21°C'
     },
     is_bulk_available: true
   },
   {
-    id: 'prod-2',
-    category_id: 'cat-1',
+    id: 'prod-[#0A4D8C]-servo',
+    category_id: 'cat-2',
     category_slug: 'engine-oil',
-    name: 'Servo Futura D 15W-40 Synthetic Engine Oil',
+    name: 'Servo Futura D 15W-40 Synthetic Diesel Oil',
     brand: 'Servo',
     grade: '15W-40',
-    description: 'Premium synthetic diesel engine oil offering maximum oxidation stability, soot control, and extended drain intervals for modern BS-VI commercial engines.',
-    price_inr: 4100,
+    description: 'Premium synthetic diesel engine oil offering maximum oxidation stability, soot control, and extended drain intervals for modern BS-VI engines.',
+    price_inr: 4100.00,
     unit: '15 Liter Can',
     stock_qty: 85,
     image_url: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80',
@@ -46,89 +170,26 @@ export const INITIAL_PRODUCTS: Product[] = [
       'API Standard': 'CI-4 Plus / SL',
       'Kinematic Viscosity @ 100°C': '15.1 cSt',
       'Flash Point': '235°C',
-      'Pour Point': '-27°C',
-      'Sulfated Ash': '1.2%'
+      'Pour Point': '-27°C'
     },
     is_bulk_available: true
   },
   {
-    id: 'prod-3',
-    category_id: 'cat-2',
-    category_slug: 'brake-fluid',
-    name: 'Servo Brake Fluid DOT 4 High Performance',
-    brand: 'Servo',
-    grade: 'DOT 4',
-    description: 'Heavy-duty hydraulic brake fluid designed for drum & disc brake systems in passenger cars, commercial fleet, and heavy transport vehicles.',
-    price_inr: 280,
-    unit: '500 ml Bottle',
-    stock_qty: 250,
-    image_url: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80',
-    spec_sheet: {
-      'Dry Boiling Point': '260°C',
-      'Wet Boiling Point': '165°C',
-      'Viscosity @ -40°C': '1400 cSt',
-      'Standard Specification': 'FMVSS 116 DOT 4'
-    },
-    is_bulk_available: false
-  },
-  {
-    id: 'prod-4',
-    category_id: 'cat-3',
+    id: 'prod-servo-grease',
+    category_id: 'cat-5',
     category_slug: 'grease',
     name: 'Servo Grease MP Lithium-Based Heavy Duty',
     brand: 'Servo',
     grade: 'NLGI 2',
     description: 'Multi-purpose lithium soap grease providing excellent mechanical stability, water resistance, and rust protection for wheel bearings and chassis.',
-    price_inr: 1850,
+    price_inr: 1850.00,
     unit: '5 kg Container',
     stock_qty: 60,
     image_url: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80',
     spec_sheet: {
       'Soap Type': 'Lithium Soap',
-      'Base Oil Viscosity @ 40°C': '150 cSt',
       'Drop Point': '190°C',
       'Penetration @ 25°C': '265-295'
-    },
-    is_bulk_available: true
-  },
-  {
-    id: 'prod-5',
-    category_id: 'cat-4',
-    category_slug: 'industrial-oil',
-    name: 'Lubeswala Premium Furnace Oil Heavy Industrial',
-    brand: 'Lubeswala',
-    grade: 'FO Grade 180',
-    description: 'High-calorific liquid fuel derived from crude distillation. Designed for industrial furnaces, boilers, heat treatment plants, and power generation.',
-    price_inr: 52.5,
-    unit: 'Liter (Bulk Tanker)',
-    stock_qty: 10000,
-    image_url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
-    spec_sheet: {
-      'Gross Calorific Value': '10,200 kcal/kg',
-      'Viscosity @ 50°C': '180 cSt',
-      'Flash Point': '66°C',
-      'Sulfur Content': '< 3.5%',
-      'Minimum Order Qty': '500 Liters'
-    },
-    is_bulk_available: true
-  },
-  {
-    id: 'prod-6',
-    category_id: 'cat-5',
-    category_slug: 'coolant',
-    name: 'Servo Kool Plus Heavy Duty Radiator Coolant',
-    brand: 'Servo',
-    grade: 'JIS K 2234',
-    description: 'Ethylene glycol-based long-life radiator coolant concentrate. Prevents engine overheating, freezing, scale formation, and corrosion.',
-    price_inr: 650,
-    unit: '3 Liter Can',
-    stock_qty: 140,
-    image_url: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80',
-    spec_sheet: {
-      'Boiling Point (50% Dilution)': '128°C',
-      'Freezing Point': '-36°C',
-      'Fluid Color': 'Fluorescent Green',
-      'Mixing Ratio': '1 Part Coolant : 3 Parts Water'
     },
     is_bulk_available: true
   }
