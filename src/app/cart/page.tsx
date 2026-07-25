@@ -11,12 +11,25 @@ export default function CartPage() {
   const updateCartQuantity = useCartStore((state) => state.updateCartQuantity);
   const clearCart = useCartStore((state) => state.clearCart);
 
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price_inr * item.quantity,
     0
   );
   const gstEstimated = subtotal * 0.18; // 18% GST estimate
   const grandTotal = subtotal + gstEstimated;
+
+  if (!mounted) {
+    return (
+      <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 shadow-sm max-w-md mx-auto my-8 p-6">
+        <p className="text-xs font-semibold text-slate-400">Loading your saved cart...</p>
+      </div>
+    );
+  }
 
   if (cart.length === 0) {
     return (

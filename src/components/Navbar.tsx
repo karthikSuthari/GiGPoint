@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
@@ -30,9 +30,14 @@ export default function Navbar() {
   const cart = useCartStore((state) => state.cart);
   const quoteItems = useCartStore((state) => state.quoteItems);
   const [headerSearchQuery, setHeaderSearchQuery] = useState('');
+  const [mounted, setMounted] = useState(false);
 
-  const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalQuoteCount = quoteItems.reduce((sum, item) => sum + item.quantity, 0);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const totalCartCount = mounted ? cart.reduce((sum, item) => sum + item.quantity, 0) : 0;
+  const totalQuoteCount = mounted ? quoteItems.reduce((sum, item) => sum + item.quantity, 0) : 0;
 
   const handleHeaderSearch = (e: React.FormEvent) => {
     e.preventDefault();
